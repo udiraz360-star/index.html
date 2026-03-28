@@ -1,56 +1,1006 @@
-<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>V58 Dashboard</title><meta http-equiv="refresh" content="120"><style>*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#080c18;color:#c8d6e5;direction:rtl;min-height:100vh}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:7px 14px;background:#0d1224;border-bottom:1px solid #1a2340}
-.logo{font-size:13px;font-weight:600;color:#e2e8f0;display:flex;align-items:center;gap:6px}
-.dl{width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 6px #10b981;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.clk{display:flex;gap:12px;font-size:9px;color:#64748b}.clk b{color:#e2e8f0;font-family:monospace}
-.ticker{overflow:hidden;background:#060a14;border-bottom:1px solid #1a2340;height:26px;position:relative}
-.ticker-t{display:flex;gap:28px;animation:scr 40s linear infinite;white-space:nowrap;height:26px;align-items:center;position:absolute;right:0}
-.ticker:hover .ticker-t{animation-play-state:paused}
-@keyframes scr{0%{transform:translateX(0)}100%{transform:translateX(50%)}}
-.tk{display:flex;align-items:center;gap:5px;font-size:10px;cursor:pointer;padding:0 3px;height:26px;border-radius:3px}.tk:hover{background:rgba(59,130,246,.15)}
-.tk-s{font-weight:700;color:#e2e8f0;font-size:11px}.tk-p{font-family:monospace;font-size:10px;color:#94a3b8}
-.tk-c{font-family:monospace;font-size:9px;padding:1px 4px;border-radius:3px}
-.up{color:#10b981;background:rgba(16,185,129,.12)}.dn{color:#ef4444;background:rgba(239,68,68,.12)}
-.ct{padding:8px 10px}
-.search-row{display:flex;gap:8px;margin-bottom:8px;align-items:center}
-.search-input{flex:1;background:#111827;border:1px solid #1e293b;border-radius:7px;padding:6px 10px;color:#e2e8f0;font-size:11px;font-family:inherit;direction:ltr;text-align:right}.search-input:focus{outline:none;border-color:#3b82f6}
-.best{background:linear-gradient(90deg,rgba(16,185,129,.08),rgba(16,185,129,.02));border:1px solid rgba(16,185,129,.2);border-radius:7px;padding:5px 10px;display:flex;align-items:center;gap:8px;font-size:10px;cursor:pointer}
-.best-sc{background:rgba(16,185,129,.15);color:#10b981;font-weight:700;font-size:14px;padding:3px 7px;border-radius:5px;font-family:monospace}
-.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:8px}
-.mc{background:#111827;border:1px solid #1e293b;border-radius:8px;padding:7px}.ml{font-size:8px;color:#64748b;margin-bottom:3px}.mv{font-size:16px;font-weight:700;font-family:monospace}.ms{font-size:8px;color:#64748b;margin-top:1px}
-.grn{color:#10b981}.red{color:#ef4444}.amb{color:#f59e0b}.blu{color:#3b82f6}
-.chart-area{background:#0d1224;border-radius:8px;border:1px solid #1e293b;margin-bottom:8px;overflow:hidden}
-.chart-hdr{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-bottom:1px solid #1e293b}
-.chart-sym{font-size:14px;font-weight:700;color:#e2e8f0}
-.chart-tfs{display:flex;gap:2px}.tf{padding:3px 7px;font-size:9px;border-radius:4px;border:1px solid #1e293b;background:transparent;color:#64748b;cursor:pointer;font-family:inherit}.tf.a{background:#1a2340;color:#e2e8f0;border-color:#334155}
-.tv-frame{width:100%;height:450px;border:none}
-.daily{background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.15);border-radius:7px;padding:7px;margin-bottom:8px;display:flex;justify-content:space-around;text-align:center}
-.dv{font-family:monospace;font-weight:700;font-size:13px}.dl2{font-size:8px;color:#64748b}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px}.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:8px}
-.p{background:#111827;border:1px solid #1e293b;border-radius:8px;overflow:hidden}
-.ph{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-bottom:1px solid #1e293b}.pt{font-size:10px;font-weight:500;color:#e2e8f0}
-.bg{font-size:8px;padding:2px 6px;border-radius:8px}.bg-g{background:rgba(16,185,129,.12);color:#10b981}.bg-b{background:rgba(59,130,246,.12);color:#3b82f6}.bg-a{background:rgba(245,158,11,.12);color:#f59e0b}
-.pb{padding:7px 10px}.tbl{width:100%;border-collapse:collapse}.tbl th{font-size:8px;color:#64748b;text-align:right;padding:4px 5px;border-bottom:1px solid #1e293b;font-weight:400}
-.tbl td{font-size:10px;padding:5px;border-bottom:1px solid rgba(30,41,59,.4);cursor:pointer}.tbl tr:hover{background:#1a2236}
-.m{font-family:monospace;font-size:9px}.sym{font-weight:700;font-size:11px;color:#e2e8f0}
-.tg{font-size:7px;padding:1px 3px;border-radius:2px;margin-right:2px}.tg-d{background:rgba(245,158,11,.15);color:#f59e0b}.tg-s{background:rgba(59,130,246,.15);color:#3b82f6}
-.pm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}.pmi{background:rgba(255,255,255,.02);border:1px solid #1e293b;border-radius:5px;padding:6px;text-align:center;cursor:pointer}.pmi:hover{border-color:#3b82f6}.pm-s{font-weight:700;font-size:12px;color:#e2e8f0}
-.si{padding:8px 0;border-bottom:1px solid rgba(30,41,59,.4);display:flex;gap:8px;cursor:pointer}.si:last-child{border:none}
-.ss{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;font-family:monospace;flex-shrink:0}
-.sc-h{background:rgba(16,185,129,.12);color:#10b981}.sc-m{background:rgba(245,158,11,.12);color:#f59e0b}
-.sif{flex:1}.sit{display:flex;justify-content:space-between;margin-bottom:2px;font-size:11px}.sid{font-size:9px;color:#64748b}
-.mr{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}.mx{text-align:center;padding:6px 3px;border-radius:5px;background:rgba(255,255,255,.02);border:1px solid #1e293b}
-.mx-v{font-family:monospace;font-size:13px;font-weight:600}.mx-n{font-size:8px;color:#64748b}
-.sr{display:flex;align-items:center;gap:5px;margin-bottom:3px}.sn{font-size:9px;min-width:50px;color:#94a3b8;text-align:left}
-.sb{flex:1;height:10px;background:rgba(255,255,255,.04);border-radius:2px;overflow:hidden}.sp{font-size:9px;min-width:35px;text-align:left;font-family:monospace}
-.fr{display:flex;gap:5px;padding:4px 0;border-bottom:1px solid rgba(30,41,59,.3);font-size:9px;align-items:center}.fr:last-child{border:none}
-.ft{font-family:monospace;font-size:8px;color:#64748b;min-width:30px}.ftx{color:#94a3b8}
-.wl{font-size:9px;padding:3px 7px;border-radius:4px;background:rgba(255,255,255,.04);border:1px solid #1e293b;cursor:pointer;color:#94a3b8;display:inline-block;margin:2px}.wl:hover{border-color:#3b82f6;color:#e2e8f0}
-.empty{text-align:center;padding:20px;color:#475569;font-size:10px}
-.footer{text-align:center;padding:5px;font-size:8px;color:#475569;border-top:1px solid #1e293b}
-@media(max-width:900px){.metrics{grid-template-columns:repeat(3,1fr)}.g2,.g3{grid-template-columns:1fr}}</style></head><body><div class="topbar"><div class="logo"><div class="dl"></div> V58 Dashboard</div><div class="clk"><span>שוק <b style="color:#ef4444" id="ms">סגור</b></span><span>IL <b id="il">--:--</b></span><span>NY <b id="ny">--:--</b></span></div></div><div class="ticker"><div class="ticker-t"><div class="tk" onclick="tv('DLO')"><span class="tk-s">DLO</span><span class="tk-p">$12.27</span><span class="tk-c dn">-3.2%</span></div><div class="tk" onclick="tv('DIOD')"><span class="tk-s">DIOD</span><span class="tk-p">$68.20</span><span class="tk-c up">+1.8%</span></div><div class="tk" onclick="tv('PENN')"><span class="tk-s">PENN</span><span class="tk-p">$13.77</span><span class="tk-c dn">-5.1%</span></div><div class="tk" onclick="tv('CYTK')"><span class="tk-s">CYTK</span><span class="tk-p">$62.50</span><span class="tk-c dn">-1.0%</span></div><div class="tk" onclick="tv('HUT')"><span class="tk-s">HUT</span><span class="tk-p">$47.41</span><span class="tk-c dn">-10.5%</span></div><div class="tk" onclick="tv('SEDG')"><span class="tk-s">SEDG</span><span class="tk-p">$51.76</span><span class="tk-c up">+10.8%</span></div><div class="tk" onclick="tv('XPEV')"><span class="tk-s">XPEV</span><span class="tk-p">$16.93</span><span class="tk-c dn">-10.3%</span></div><div class="tk" onclick="tv('PLTR')"><span class="tk-s">PLTR</span><span class="tk-p">$143.06</span><span class="tk-c dn">-10.1%</span></div><div class="tk" onclick="tv('ALGM')"><span class="tk-s">ALGM</span><span class="tk-p">$30.12</span><span class="tk-c dn">-8.7%</span></div><div class="tk" onclick="tv('LC')"><span class="tk-s">LC</span><span class="tk-p">$13.87</span><span class="tk-c dn">-8.0%</span></div><div class="tk" onclick="tv('BRZE')"><span class="tk-s">BRZE</span><span class="tk-p">$23.00</span><span class="tk-c up">+7.7%</span></div><div class="tk" onclick="tv('SPY')"><span class="tk-s">SPY</span><span class="tk-p">$0.00</span><span class="tk-c up">+0.0%</span></div><div class="tk" onclick="tv('QQQ')"><span class="tk-s">QQQ</span><span class="tk-p">$0.00</span><span class="tk-c up">+0.0%</span></div><div class="tk" onclick="tv('DLO')"><span class="tk-s">DLO</span><span class="tk-p">$12.27</span><span class="tk-c dn">-3.2%</span></div><div class="tk" onclick="tv('DIOD')"><span class="tk-s">DIOD</span><span class="tk-p">$68.20</span><span class="tk-c up">+1.8%</span></div><div class="tk" onclick="tv('PENN')"><span class="tk-s">PENN</span><span class="tk-p">$13.77</span><span class="tk-c dn">-5.1%</span></div><div class="tk" onclick="tv('CYTK')"><span class="tk-s">CYTK</span><span class="tk-p">$62.50</span><span class="tk-c dn">-1.0%</span></div><div class="tk" onclick="tv('HUT')"><span class="tk-s">HUT</span><span class="tk-p">$47.41</span><span class="tk-c dn">-10.5%</span></div><div class="tk" onclick="tv('SEDG')"><span class="tk-s">SEDG</span><span class="tk-p">$51.76</span><span class="tk-c up">+10.8%</span></div><div class="tk" onclick="tv('XPEV')"><span class="tk-s">XPEV</span><span class="tk-p">$16.93</span><span class="tk-c dn">-10.3%</span></div><div class="tk" onclick="tv('PLTR')"><span class="tk-s">PLTR</span><span class="tk-p">$143.06</span><span class="tk-c dn">-10.1%</span></div><div class="tk" onclick="tv('ALGM')"><span class="tk-s">ALGM</span><span class="tk-p">$30.12</span><span class="tk-c dn">-8.7%</span></div><div class="tk" onclick="tv('LC')"><span class="tk-s">LC</span><span class="tk-p">$13.87</span><span class="tk-c dn">-8.0%</span></div><div class="tk" onclick="tv('BRZE')"><span class="tk-s">BRZE</span><span class="tk-p">$23.00</span><span class="tk-c up">+7.7%</span></div><div class="tk" onclick="tv('SPY')"><span class="tk-s">SPY</span><span class="tk-p">$0.00</span><span class="tk-c up">+0.0%</span></div><div class="tk" onclick="tv('QQQ')"><span class="tk-s">QQQ</span><span class="tk-p">$0.00</span><span class="tk-c up">+0.0%</span></div></div></div><div class="ct"><div class="search-row"><input class="search-input" placeholder="..." id="sb"><div class="best"><div class="best-sc">--</div><div style="color:#64748b;font-size:10px">ממתין לסריקה</div></div></div><div class="metrics"><div class="mc"><div class="ml">P&L</div><div class="mv red">$915</div><div class="ms">-3.3%</div></div><div class="mc"><div class="ml">WIN RATE</div><div class="mv red">22%</div><div class="ms">2W/7L</div></div><div class="mc"><div class="ml">פוזיציות</div><div class="mv blu">11</div><div class="ms">סגור</div></div><div class="mc"><div class="ml">סיגנלים</div><div class="mv" style="color:#8b5cf6">0</div><div class="ms">סף: 65</div></div><div class="mc"><div class="ml">מאקרו</div><div class="mv amb">VIX</div><div class="ms">—</div></div></div><div class="chart-area"><div class="chart-hdr"><span class="chart-sym" id="cs">DLO</span><div class="chart-tfs"><button class="tf" onclick="setTF(5)">5 דק</button><button class="tf a" onclick="setTF(15)">15 דק</button><button class="tf" onclick="setTF(60)">שעה</button><button class="tf" onclick="setTF(999)">יום</button><button class="tf" onclick="setTF(9999)">שבוע</button></div></div><iframe id="tvf" class="tv-frame" src="https://s.tradingview.com/widgetembed/?frameElementId=tvf&symbol=DLO&interval=15&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=0d1224&studies=MAExp%4025&studies=MAExp%40200&studies=RSI%40tv-basicstudies&theme=dark&style=1&timezone=Asia%2FJerusalem&withdateranges=1&hide_top_toolbar=0&allow_symbol_change=1&locale=he_IL" allowtransparency="true"></iframe></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px"><div style="background:#0d1224;border-radius:8px;border:1px solid #1e293b;overflow:hidden"><div style="padding:5px 10px;border-bottom:1px solid #1e293b;font-size:10px;font-weight:500;color:#e2e8f0">S&P 500</div><iframe src="https://s.tradingview.com/widgetembed/?symbol=SPY&interval=D&hidesidetoolbar=1&symboledit=0&saveimage=0&toolbarbg=0d1224&theme=dark&style=3&timezone=Asia%2FJerusalem&withdateranges=0&hide_top_toolbar=1&allow_symbol_change=0&locale=he_IL" style="width:100%;height:200px;border:none" allowtransparency="true"></iframe></div><div style="background:#0d1224;border-radius:8px;border:1px solid #1e293b;overflow:hidden"><div style="padding:5px 10px;border-bottom:1px solid #1e293b;font-size:10px;font-weight:500;color:#e2e8f0">VIX — מדד הפחד</div><iframe src="https://s.tradingview.com/widgetembed/?symbol=CBOE%3AVIX&interval=D&hidesidetoolbar=1&symboledit=0&saveimage=0&toolbarbg=0d1224&theme=dark&style=3&timezone=Asia%2FJerusalem&withdateranges=0&hide_top_toolbar=1&allow_symbol_change=0&locale=he_IL" style="width:100%;height:200px;border:none" allowtransparency="true"></iframe></div></div><div class="daily"><div><div class="dv grn">2</div><div class="dl2">הצלחות</div></div><div><div class="dv red">7</div><div class="dl2">הפסדים</div></div><div><div class="dv red">22%</div><div class="dl2">Win Rate</div></div><div><div class="dv red">$915</div><div class="dl2">P&L</div></div><div><div class="dv" style="color:#8b5cf6">0</div><div class="dl2">סיגנלים</div></div></div><div class="g3"><div class="p"><div class="ph"><span class="pt">📊 פוזיציות</span><span class="bg bg-b">11</span></div><div style="padding:0"><table class="tbl"><thead><tr><th>מניה</th><th>כניסה</th><th>נוכחי</th><th>P&L</th><th>Trail</th></tr></thead><tbody><tr onclick="tv('DLO')"><td><span class="sym">DLO</span><span class="tg tg-s">SW</span></td><td class="m">$12.67</td><td class="m">$12.27</td><td class="m red" style="font-weight:700">-3.2%</td><td>⚪</td></tr><tr onclick="tv('DIOD')"><td><span class="sym">DIOD</span><span class="tg tg-s">SW</span></td><td class="m">$66.99</td><td class="m">$68.20</td><td class="m grn" style="font-weight:700">+1.8%</td><td>🟡</td></tr><tr onclick="tv('PENN')"><td><span class="sym">PENN</span><span class="tg tg-s">SW</span></td><td class="m">$14.51</td><td class="m">$13.77</td><td class="m red" style="font-weight:700">-5.1%</td><td>⚪</td></tr><tr onclick="tv('CYTK')"><td><span class="sym">CYTK</span><span class="tg tg-s">SW</span></td><td class="m">$63.15</td><td class="m">$62.50</td><td class="m red" style="font-weight:700">-1.0%</td><td>⚪</td></tr><tr onclick="tv('HUT')"><td><span class="sym">HUT</span><span class="tg tg-s">SW</span></td><td class="m">$52.94</td><td class="m">$47.41</td><td class="m red" style="font-weight:700">-10.5%</td><td>⚪</td></tr><tr onclick="tv('SEDG')"><td><span class="sym">SEDG</span><span class="tg tg-s">SW</span></td><td class="m">$46.73</td><td class="m">$51.76</td><td class="m grn" style="font-weight:700">+10.8%</td><td>🟡</td></tr><tr onclick="tv('XPEV')"><td><span class="sym">XPEV</span><span class="tg tg-s">SW</span></td><td class="m">$18.87</td><td class="m">$16.93</td><td class="m red" style="font-weight:700">-10.3%</td><td>⚪</td></tr><tr onclick="tv('PLTR')"><td><span class="sym">PLTR</span><span class="tg tg-s">SW</span></td><td class="m">$159.20</td><td class="m">$143.06</td><td class="m red" style="font-weight:700">-10.1%</td><td>⚪</td></tr><tr onclick="tv('ALGM')"><td><span class="sym">ALGM</span><span class="tg tg-s">SW</span></td><td class="m">$33.00</td><td class="m">$30.12</td><td class="m red" style="font-weight:700">-8.7%</td><td>⚪</td></tr><tr onclick="tv('LC')"><td><span class="sym">LC</span><span class="tg tg-s">SW</span></td><td class="m">$15.08</td><td class="m">$13.87</td><td class="m red" style="font-weight:700">-8.0%</td><td>⚪</td></tr><tr onclick="tv('BRZE')"><td><span class="sym">BRZE</span><span class="tg tg-s">SW</span></td><td class="m">$21.36</td><td class="m">$23.00</td><td class="m grn" style="font-weight:700">+7.7%</td><td>⚪</td></tr></tbody></table></div></div><div class="p"><div class="ph"><span class="pt">🌅 מועמדות</span></div><div class="pb"><div class="pm-grid"><div class="pmi" onclick="tv('HUT')"><div class="pm-s">HUT</div></div><div class="pmi" onclick="tv('DIOD')"><div class="pm-s">DIOD</div></div><div class="pmi" onclick="tv('DLO')"><div class="pm-s">DLO</div></div><div class="pmi" onclick="tv('SEDG')"><div class="pm-s">SEDG</div></div><div class="pmi" onclick="tv('CYTK')"><div class="pm-s">CYTK</div></div><div class="pmi" onclick="tv('PENN')"><div class="pm-s">PENN</div></div></div></div></div><div class="p"><div class="ph"><span class="pt">⚡ פעילות</span></div><div class="pb"><div class="fr"><span class="ft">19:25</span><span style="font-size:11px">🤖</span><span class="ftx">דאשבורד עודכן</span></div><div class="fr"><span class="ft"></span><span style="font-size:11px">📊</span><span class="ftx">11 פוזיציות | 0 סיגנלים</span></div><div class="fr"><span class="ft"></span><span style="font-size:11px">📈</span><span class="ftx">Win Rate: 22% (2W/7L)</span></div></div></div></div><div class="g2"><div class="p"><div class="ph"><span class="pt">🎯 סיגנלים</span><span class="bg bg-g">0</span></div><div class="pb"><div class="empty">אין סיגנלים היום</div></div></div><div class="p"><div class="ph"><span class="pt">🌍 מאקרו + סקטורים</span></div><div class="pb"><div class="mr"><div class="mx"><div class="mx-v red">31.0</div><div class="mx-n">VIX</div></div><div class="mx"><div class="mx-v red">4.44</div><div class="mx-n">10Y</div></div><div class="mx"><div class="mx-v" style="color:#94a3b8">1.02</div><div class="mx-n">DXY</div></div><div class="mx"><div class="mx-v grn">0.92</div><div class="mx-n">P/C</div></div></div><div style="text-align:center;margin-top:5px;font-size:10px">🔴 סיכון גבוה (Bearish Macro)</div><div style="margin-top:6px;padding-top:5px;border-top:1px solid #1e293b"><div class="sr"><span class="sn">Energy</span><div class="sb"><div style="width:90%;background:#10b981;height:100%;border-radius:2px"></div></div><span class="sp grn">+17.8%</span></div><div class="sr"><span class="sn">Utilitie</span><div class="sb"><div style="width:71.36%;background:#10b981;height:100%;border-radius:2px"></div></div><span class="sp grn">+4.3%</span></div><div class="sr"><span class="sn">Finance</span><div class="sb"><div style="width:32.480000000000004%;background:#10b981;height:100%;border-radius:2px"></div></div><span class="sp ">+1.0%</span></div><div class="sr"><span class="sn">Technolo</span><div class="sb"><div style="width:27.08%;background:#10b981;height:100%;border-radius:2px"></div></div><span class="sp ">+0.6%</span></div><div class="sr"><span class="sn">Staples</span><div class="sb"><div style="width:20.84%;background:#10b981;height:100%;border-radius:2px"></div></div><span class="sp ">+0.1%</span></div></div><div style="margin-top:6px;padding-top:5px;border-top:1px solid #1e293b;font-size:9px;color:#64748b">Watchlist</div><div style="margin-top:3px"><span class="wl" onclick="tv('HUT')">HUT</span><span class="wl" onclick="tv('DIOD')">DIOD</span><span class="wl" onclick="tv('DLO')">DLO</span><span class="wl" onclick="tv('SEDG')">SEDG</span><span class="wl" onclick="tv('CYTK')">CYTK</span><span class="wl" onclick="tv('PENN')">PENN</span></div></div></div></div></div><div class="footer">V58 Engine | 18 מנועים | TradingView | עודכן 19:25</div><script>function tv(s){if(!s)return;document.getElementById('cs').textContent=s;document.getElementById('tvf').src='https://s.tradingview.com/widgetembed/?frameElementId=tvf&symbol='+s+'&interval=15&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=0d1224&studies=MAExp%4025&studies=MAExp%40200&studies=RSI%40tv-basicstudies&theme=dark&style=1&timezone=Asia%2FJerusalem&withdateranges=1&hide_top_toolbar=0&allow_symbol_change=1&locale=he_IL';document.getElementById('sb').value='';}
-function setTF(t){if(t==999)t='D';if(t==9999)t='W';var s=document.getElementById('cs').textContent;document.getElementById('tvf').src='https://s.tradingview.com/widgetembed/?frameElementId=tvf&symbol='+s+'&interval='+t+'&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=0d1224&studies=MAExp%4025&studies=MAExp%40200&studies=RSI%40tv-basicstudies&theme=dark&style=1&timezone=Asia%2FJerusalem&withdateranges=1&hide_top_toolbar=0&allow_symbol_change=1&locale=he_IL';document.querySelectorAll('.tf').forEach(function(b){b.classList.remove('a')});event.target.classList.add('a');}
-function uc(){var n=new Date();var i=new Date(n.toLocaleString('en-US',{timeZone:'Asia/Jerusalem'}));var y=new Date(n.toLocaleString('en-US',{timeZone:'America/New_York'}));document.getElementById('il').textContent=i.getHours().toString().padStart(2,'0')+':'+i.getMinutes().toString().padStart(2,'0');document.getElementById('ny').textContent=y.getHours().toString().padStart(2,'0')+':'+y.getMinutes().toString().padStart(2,'0');var h=y.getHours(),d=y.getDay();var o=d>0&&d<6&&((h==9&&y.getMinutes()>=30)||h>9)&&h<16;document.getElementById('ms').textContent=o?'פתוח':'סגור';document.getElementById('ms').style.color=o?'#10b981':'#ef4444';}
-uc();setInterval(uc,30000);document.getElementById('sb').addEventListener('keydown',function(e){if(e.key==='Enter')tv(this.value.toUpperCase().trim());});</script></body></html>
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>V58 Institutional Signal Engine</title>
+<meta http-equiv="refresh" content="120">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Heebo:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+/* ========== CSS VARIABLES / THEMES ========== */
+:root {
+  --font-body: 'Heebo', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.3s cubic-bezier(.4,0,.2,1);
+  --shadow-card: 0 2px 12px rgba(0,0,0,.08);
+}
+
+/* DARK (default) */
+[data-theme="dark"] {
+  --bg-root: #060a14;
+  --bg-surface: #0d1224;
+  --bg-card: #111827;
+  --bg-hover: #1a2236;
+  --border: #1e293b;
+  --border-accent: #334155;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-dim: #475569;
+  --accent-green: #10b981;
+  --accent-red: #ef4444;
+  --accent-amber: #f59e0b;
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  --green-bg: rgba(16,185,129,.12);
+  --red-bg: rgba(239,68,68,.12);
+  --amber-bg: rgba(245,158,11,.12);
+  --blue-bg: rgba(59,130,246,.12);
+  --purple-bg: rgba(139,92,246,.12);
+  --gradient-hero: linear-gradient(135deg, #0d1224 0%, #111827 50%, #0f172a 100%);
+  --topbar-bg: #0a0f1e;
+  --ticker-bg: #060a14;
+  --shadow-card: 0 2px 16px rgba(0,0,0,.3);
+  --chart-toolbar-bg: #0d1224;
+  --tv-theme: dark;
+  --tv-bg: 0d1224;
+  --spark-up: #10b981;
+  --spark-down: #ef4444;
+  --glow: 0 0 20px rgba(59,130,246,.15);
+}
+
+/* LIGHT */
+[data-theme="light"] {
+  --bg-root: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-hover: #f1f5f9;
+  --border: #e2e8f0;
+  --border-accent: #cbd5e1;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --text-dim: #cbd5e1;
+  --accent-green: #059669;
+  --accent-red: #dc2626;
+  --accent-amber: #d97706;
+  --accent-blue: #2563eb;
+  --accent-purple: #7c3aed;
+  --green-bg: rgba(5,150,105,.08);
+  --red-bg: rgba(220,38,38,.08);
+  --amber-bg: rgba(217,119,6,.08);
+  --blue-bg: rgba(37,99,235,.08);
+  --purple-bg: rgba(124,58,237,.08);
+  --gradient-hero: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+  --topbar-bg: #ffffff;
+  --ticker-bg: #f8fafc;
+  --shadow-card: 0 1px 8px rgba(0,0,0,.06);
+  --chart-toolbar-bg: #ffffff;
+  --tv-theme: light;
+  --tv-bg: ffffff;
+  --spark-up: #059669;
+  --spark-down: #dc2626;
+  --glow: 0 0 20px rgba(37,99,235,.08);
+}
+
+/* HITECH */
+[data-theme="hitech"] {
+  --bg-root: #000000;
+  --bg-surface: #0a0a0a;
+  --bg-card: #111111;
+  --bg-hover: #1a1a1a;
+  --border: #222222;
+  --border-accent: #333333;
+  --text-primary: #00ff88;
+  --text-secondary: #00cc6a;
+  --text-muted: #006633;
+  --text-dim: #004422;
+  --accent-green: #00ff88;
+  --accent-red: #ff3355;
+  --accent-amber: #ffaa00;
+  --accent-blue: #00ccff;
+  --accent-purple: #aa55ff;
+  --green-bg: rgba(0,255,136,.08);
+  --red-bg: rgba(255,51,85,.08);
+  --amber-bg: rgba(255,170,0,.08);
+  --blue-bg: rgba(0,204,255,.08);
+  --purple-bg: rgba(170,85,255,.08);
+  --gradient-hero: linear-gradient(135deg, #000 0%, #0a0a0a 50%, #050505 100%);
+  --topbar-bg: #050505;
+  --ticker-bg: #000000;
+  --shadow-card: 0 0 20px rgba(0,255,136,.05);
+  --chart-toolbar-bg: #0a0a0a;
+  --tv-theme: dark;
+  --tv-bg: 0a0a0a;
+  --spark-up: #00ff88;
+  --spark-down: #ff3355;
+  --glow: 0 0 30px rgba(0,255,136,.1);
+}
+
+/* OCEAN BLUE */
+[data-theme="ocean"] {
+  --bg-root: #0a1628;
+  --bg-surface: #0f1f3d;
+  --bg-card: #132744;
+  --bg-hover: #1a3358;
+  --border: #1e3a5f;
+  --border-accent: #2a5082;
+  --text-primary: #d4e6ff;
+  --text-secondary: #8ab4f8;
+  --text-muted: #5b8dd4;
+  --text-dim: #3a6aad;
+  --accent-green: #34d399;
+  --accent-red: #fb7185;
+  --accent-amber: #fbbf24;
+  --accent-blue: #60a5fa;
+  --accent-purple: #a78bfa;
+  --green-bg: rgba(52,211,153,.1);
+  --red-bg: rgba(251,113,133,.1);
+  --amber-bg: rgba(251,191,36,.1);
+  --blue-bg: rgba(96,165,250,.1);
+  --purple-bg: rgba(167,139,250,.1);
+  --gradient-hero: linear-gradient(135deg, #0a1628 0%, #0f1f3d 50%, #0d1a33 100%);
+  --topbar-bg: #081424;
+  --ticker-bg: #0a1628;
+  --shadow-card: 0 2px 20px rgba(10,22,40,.5);
+  --chart-toolbar-bg: #0f1f3d;
+  --tv-theme: dark;
+  --tv-bg: 0f1f3d;
+  --spark-up: #34d399;
+  --spark-down: #fb7185;
+  --glow: 0 0 24px rgba(96,165,250,.12);
+}
+
+/* ========== GLOBAL RESET ========== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font-body);
+  background:var(--bg-root);
+  color:var(--text-secondary);
+  direction:rtl;
+  min-height:100vh;
+  transition:background var(--transition), color var(--transition);
+  overflow-x:hidden;
+}
+
+/* ========== TOPBAR ========== */
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 24px;
+  background:var(--topbar-bg);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.logo{
+  display:flex;align-items:center;gap:10px;
+  font-size:18px;font-weight:700;color:var(--text-primary);
+  letter-spacing:-0.5px;
+}
+.logo-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--accent-green);
+  box-shadow:0 0 12px var(--accent-green);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.logo-v{font-size:11px;font-weight:400;color:var(--text-muted);margin-right:6px}
+
+.top-right{display:flex;align-items:center;gap:16px}
+
+.clock-group{display:flex;gap:16px;font-size:12px;color:var(--text-muted)}
+.clock-item{display:flex;align-items:center;gap:4px}
+.clock-label{font-size:10px;color:var(--text-muted)}
+.clock-val{font-family:var(--font-mono);font-weight:600;color:var(--text-primary);font-size:13px}
+.market-badge{
+  font-size:11px;font-weight:600;
+  padding:3px 10px;border-radius:20px;
+  transition:all var(--transition);
+}
+.market-open{background:var(--green-bg);color:var(--accent-green)}
+.market-closed{background:var(--red-bg);color:var(--accent-red)}
+
+/* Theme Switcher */
+.theme-switcher{
+  display:flex;gap:4px;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:3px;
+}
+.theme-btn{
+  width:28px;height:28px;border-radius:6px;border:2px solid transparent;
+  cursor:pointer;transition:all var(--transition);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;background:transparent;
+}
+.theme-btn:hover{transform:scale(1.1)}
+.theme-btn.active{border-color:var(--accent-blue);box-shadow:var(--glow)}
+.theme-btn[data-t="light"]{background:#f8fafc;color:#0f172a}
+.theme-btn[data-t="dark"]{background:#111827;color:#e2e8f0}
+.theme-btn[data-t="hitech"]{background:#000;color:#00ff88}
+.theme-btn[data-t="ocean"]{background:#0f1f3d;color:#60a5fa}
+
+/* ========== MARKET COUNTDOWN ========== */
+.countdown-bar{
+  background:var(--bg-surface);
+  border-bottom:1px solid var(--border);
+  padding:8px 24px;
+  display:flex;align-items:center;justify-content:center;gap:24px;
+  font-size:12px;
+}
+.cd-label{color:var(--text-muted);font-size:11px}
+.cd-timer{
+  font-family:var(--font-mono);font-weight:700;font-size:20px;
+  color:var(--text-primary);letter-spacing:2px;
+}
+.cd-timer span{
+  display:inline-block;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:2px 6px;
+  min-width:32px;text-align:center;
+  margin:0 1px;
+}
+.cd-colon{color:var(--text-muted);margin:0 2px;animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.cd-session{
+  font-size:11px;font-weight:600;
+  padding:3px 12px;border-radius:16px;
+}
+.cd-premarket{background:var(--amber-bg);color:var(--accent-amber)}
+.cd-regular{background:var(--green-bg);color:var(--accent-green)}
+.cd-afterhours{background:var(--purple-bg);color:var(--accent-purple)}
+.cd-closed{background:rgba(100,116,139,.1);color:var(--text-muted)}
+
+/* ========== TICKER ========== */
+.ticker{
+  overflow:hidden;background:var(--ticker-bg);
+  border-bottom:1px solid var(--border);
+  height:38px;position:relative;
+}
+.ticker::before,.ticker::after{
+  content:'';position:absolute;top:0;bottom:0;width:40px;z-index:2;pointer-events:none;
+}
+.ticker::before{right:0;background:linear-gradient(to left,var(--ticker-bg),transparent)}
+.ticker::after{left:0;background:linear-gradient(to right,var(--ticker-bg),transparent)}
+.ticker-track{
+  display:flex;gap:32px;
+  animation:scroll 50s linear infinite;
+  white-space:nowrap;height:38px;align-items:center;
+  position:absolute;right:0;
+}
+.ticker:hover .ticker-track{animation-play-state:paused}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(50%)}}
+.tk{
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;cursor:pointer;padding:4px 8px;
+  border-radius:6px;transition:background var(--transition);
+}
+.tk:hover{background:var(--blue-bg)}
+.tk-sym{font-weight:700;color:var(--text-primary);font-size:13px}
+.tk-price{font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)}
+.tk-chg{
+  font-family:var(--font-mono);font-size:11px;
+  padding:2px 6px;border-radius:4px;font-weight:500;
+}
+.chg-up{color:var(--accent-green);background:var(--green-bg)}
+.chg-dn{color:var(--accent-red);background:var(--red-bg)}
+
+/* ========== MAIN CONTENT ========== */
+.main{padding:16px 24px;max-width:1600px;margin:0 auto}
+
+/* Search Row */
+.search-row{display:flex;gap:12px;margin-bottom:16px;align-items:center}
+.search-input{
+  flex:1;background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:10px 16px;
+  color:var(--text-primary);font-size:14px;
+  font-family:var(--font-body);
+  direction:ltr;text-align:right;
+  transition:all var(--transition);
+}
+.search-input:focus{outline:none;border-color:var(--accent-blue);box-shadow:var(--glow)}
+.search-input::placeholder{color:var(--text-muted)}
+
+.best-signal{
+  background:linear-gradient(90deg,var(--green-bg),transparent);
+  border:1px solid rgba(16,185,129,.2);
+  border-radius:var(--radius);
+  padding:8px 16px;
+  display:flex;align-items:center;gap:12px;
+  cursor:pointer;transition:all var(--transition);
+  min-width:220px;
+}
+.best-signal:hover{border-color:var(--accent-green)}
+.best-score{
+  background:var(--green-bg);color:var(--accent-green);
+  font-weight:700;font-size:18px;
+  padding:4px 10px;border-radius:8px;
+  font-family:var(--font-mono);
+}
+.best-info{font-size:12px}
+.best-label{color:var(--text-muted);font-size:10px}
+.best-sym{font-weight:600;color:var(--text-primary)}
+
+/* ========== METRICS ========== */
+.metrics{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px;
+}
+.metric-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:14px 16px;
+  transition:all var(--transition);
+  position:relative;overflow:hidden;
+}
+.metric-card::after{
+  content:'';position:absolute;top:0;right:0;left:0;height:3px;
+  border-radius:var(--radius) var(--radius) 0 0;
+  opacity:0;transition:opacity var(--transition);
+}
+.metric-card:hover::after{opacity:1}
+.metric-card:hover{box-shadow:var(--shadow-card);transform:translateY(-1px)}
+.mc-pnl::after{background:var(--accent-green)}.mc-wr::after{background:var(--accent-amber)}
+.mc-pos::after{background:var(--accent-blue)}.mc-sig::after{background:var(--accent-purple)}
+.mc-mac::after{background:var(--accent-amber)}
+.metric-label{font-size:11px;color:var(--text-muted);margin-bottom:6px;font-weight:500}
+.metric-value{font-size:24px;font-weight:700;font-family:var(--font-mono);line-height:1}
+.metric-sub{font-size:11px;color:var(--text-muted);margin-top:4px;font-family:var(--font-mono)}
+.clr-green{color:var(--accent-green)}.clr-red{color:var(--accent-red)}
+.clr-amber{color:var(--accent-amber)}.clr-blue{color:var(--accent-blue)}
+.clr-purple{color:var(--accent-purple)}
+
+/* ========== CHART AREA ========== */
+.chart-area{
+  background:var(--bg-surface);
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  margin-bottom:16px;overflow:hidden;
+  box-shadow:var(--shadow-card);
+}
+.chart-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 16px;
+  border-bottom:1px solid var(--border);
+  background:var(--chart-toolbar-bg);
+}
+.chart-symbol{font-size:20px;font-weight:700;color:var(--text-primary);font-family:var(--font-mono)}
+.chart-tfs{display:flex;gap:4px}
+.tf-btn{
+  padding:6px 12px;font-size:11px;border-radius:6px;
+  border:1px solid var(--border);
+  background:transparent;color:var(--text-muted);
+  cursor:pointer;font-family:var(--font-body);font-weight:500;
+  transition:all var(--transition);
+}
+.tf-btn:hover{color:var(--text-primary);border-color:var(--border-accent)}
+.tf-btn.active{background:var(--blue-bg);color:var(--accent-blue);border-color:var(--accent-blue)}
+.tv-frame{width:100%;height:520px;border:none}
+
+/* Mini Charts Row */
+.mini-charts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.mini-chart{
+  background:var(--bg-surface);border-radius:var(--radius);
+  border:1px solid var(--border);overflow:hidden;
+  box-shadow:var(--shadow-card);
+}
+.mini-chart-hdr{
+  padding:8px 14px;border-bottom:1px solid var(--border);
+  font-size:13px;font-weight:600;color:var(--text-primary);
+  display:flex;align-items:center;gap:6px;
+}
+.mini-chart iframe{width:100%;height:220px;border:none}
+
+/* ========== DAILY STATS BAR ========== */
+.daily-bar{
+  background:var(--blue-bg);border:1px solid rgba(59,130,246,.15);
+  border-radius:var(--radius);padding:12px;margin-bottom:16px;
+  display:flex;justify-content:space-around;text-align:center;
+}
+.daily-item .daily-val{font-family:var(--font-mono);font-weight:700;font-size:18px}
+.daily-item .daily-lbl{font-size:10px;color:var(--text-muted);margin-top:2px}
+
+/* ========== GRID LAYOUTS ========== */
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+
+/* ========== PANEL (card) ========== */
+.panel{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  transition:box-shadow var(--transition);
+}
+.panel:hover{box-shadow:var(--shadow-card)}
+.panel-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 16px;border-bottom:1px solid var(--border);
+}
+.panel-title{font-size:13px;font-weight:600;color:var(--text-primary)}
+.panel-badge{
+  font-size:10px;padding:2px 8px;border-radius:12px;font-weight:600;
+}
+.badge-green{background:var(--green-bg);color:var(--accent-green)}
+.badge-blue{background:var(--blue-bg);color:var(--accent-blue)}
+.badge-amber{background:var(--amber-bg);color:var(--accent-amber)}
+.panel-body{padding:12px 16px}
+
+/* ========== TABLE ========== */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{
+  font-size:11px;color:var(--text-muted);text-align:right;
+  padding:8px 10px;border-bottom:1px solid var(--border);font-weight:500;
+}
+.data-table td{
+  font-size:13px;padding:10px;
+  border-bottom:1px solid rgba(30,41,59,.2);
+  cursor:pointer;transition:background var(--transition);
+}
+.data-table tr:hover td{background:var(--bg-hover)}
+.data-table .mono{font-family:var(--font-mono);font-size:12px}
+.data-table .sym-cell{display:flex;align-items:center;gap:8px}
+.sym-name{font-weight:700;font-size:14px;color:var(--text-primary)}
+.style-tag{
+  font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600;
+}
+.tag-day{background:var(--amber-bg);color:var(--accent-amber)}
+.tag-swing{background:var(--blue-bg);color:var(--accent-blue)}
+
+/* Sparkline cell */
+.spark-cell{display:flex;align-items:center;gap:6px}
+.sparkline{width:48px;height:20px}
+
+/* ========== SIGNALS ========== */
+.signal-card{
+  padding:12px 0;border-bottom:1px solid rgba(30,41,59,.2);
+  display:flex;gap:12px;cursor:pointer;
+  transition:background var(--transition);
+}
+.signal-card:last-child{border:none}
+.signal-card:hover{background:var(--bg-hover);border-radius:8px;margin:0 -8px;padding:12px 8px}
+.signal-score{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:16px;font-family:var(--font-mono);flex-shrink:0;
+}
+.score-high{background:var(--green-bg);color:var(--accent-green)}
+.score-mid{background:var(--amber-bg);color:var(--accent-amber)}
+.signal-info{flex:1}
+.signal-top{display:flex;justify-content:space-between;margin-bottom:4px;font-size:13px}
+.signal-detail{font-size:11px;color:var(--text-muted);font-family:var(--font-mono)}
+
+/* ========== MACRO ========== */
+.macro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.macro-item{
+  text-align:center;padding:10px 6px;border-radius:8px;
+  background:rgba(255,255,255,.02);border:1px solid var(--border);
+}
+.macro-val{font-family:var(--font-mono);font-size:16px;font-weight:600}
+.macro-name{font-size:10px;color:var(--text-muted);margin-top:2px}
+
+/* Sectors */
+.sector-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.sector-name{font-size:11px;min-width:60px;color:var(--text-secondary);text-align:left}
+.sector-bar{flex:1;height:12px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden}
+.sector-bar-fill{height:100%;border-radius:4px;transition:width 0.5s ease}
+.sector-pct{font-size:11px;min-width:45px;text-align:left;font-family:var(--font-mono)}
+
+/* Candidates Grid */
+.cand-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cand-item{
+  background:rgba(255,255,255,.02);border:1px solid var(--border);
+  border-radius:8px;padding:10px;text-align:center;
+  cursor:pointer;transition:all var(--transition);
+}
+.cand-item:hover{border-color:var(--accent-blue);transform:translateY(-2px);box-shadow:var(--glow)}
+.cand-sym{font-weight:700;font-size:15px;color:var(--text-primary)}
+
+/* Feed */
+.feed-item{
+  display:flex;gap:8px;padding:8px 0;
+  border-bottom:1px solid rgba(30,41,59,.2);font-size:12px;align-items:center;
+}
+.feed-item:last-child{border:none}
+.feed-time{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);min-width:38px}
+.feed-text{color:var(--text-secondary)}
+
+/* Watchlist */
+.wl-chip{
+  font-size:12px;padding:4px 10px;border-radius:6px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  cursor:pointer;color:var(--text-secondary);
+  display:inline-block;margin:3px;
+  transition:all var(--transition);
+}
+.wl-chip:hover{border-color:var(--accent-blue);color:var(--text-primary)}
+
+.empty-state{text-align:center;padding:30px;color:var(--text-dim);font-size:13px}
+
+/* ========== FOOTER ========== */
+.footer{
+  text-align:center;padding:12px;font-size:11px;
+  color:var(--text-muted);border-top:1px solid var(--border);
+  margin-top:8px;
+}
+.footer a{color:var(--accent-blue);text-decoration:none}
+
+/* ========== RESPONSIVE ========== */
+@media(max-width:1200px){
+  .metrics{grid-template-columns:repeat(3,1fr)}
+  .grid-3{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+  .topbar{padding:10px 16px;flex-wrap:wrap;gap:10px}
+  .main{padding:12px 12px}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .grid-2,.grid-3,.mini-charts{grid-template-columns:1fr}
+  .daily-bar{flex-wrap:wrap;gap:12px}
+  .daily-bar > div{min-width:60px}
+  .chart-header{flex-direction:column;gap:8px;align-items:flex-start}
+  .tv-frame{height:380px}
+  .mini-chart iframe{height:180px}
+  .macro-grid{grid-template-columns:repeat(2,1fr)}
+  .cand-grid{grid-template-columns:repeat(2,1fr)}
+  .search-row{flex-direction:column}
+  .best-signal{min-width:auto;width:100%}
+  .countdown-bar{flex-wrap:wrap;gap:8px;padding:8px 12px}
+}
+@media(max-width:480px){
+  .topbar{padding:8px 10px}
+  .logo{font-size:15px}
+  .clock-group{gap:8px;font-size:10px}
+  .metrics{grid-template-columns:1fr 1fr;gap:8px}
+  .metric-value{font-size:20px}
+  .main{padding:8px 8px}
+  .theme-switcher{gap:2px;padding:2px}
+  .theme-btn{width:24px;height:24px;font-size:12px}
+  .cd-timer{font-size:16px}
+  .cd-timer span{padding:2px 4px;min-width:26px}
+  .top-right{gap:8px}
+}
+</style>
+</head>
+<body data-theme="dark">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-dot"></div>
+    V58 Engine
+    <span class="logo-v">Institutional Signal</span>
+  </div>
+  <div class="top-right">
+    <div class="theme-switcher">
+      <button class="theme-btn active" data-t="dark" onclick="setTheme('dark')" title="Dark">🌑</button>
+      <button class="theme-btn" data-t="light" onclick="setTheme('light')" title="Light">☀️</button>
+      <button class="theme-btn" data-t="hitech" onclick="setTheme('hitech')" title="HiTech">💚</button>
+      <button class="theme-btn" data-t="ocean" onclick="setTheme('ocean')" title="Ocean">🌊</button>
+    </div>
+    <div class="clock-group">
+      <div class="clock-item">
+        <span class="clock-label">שוק</span>
+        <span class="market-badge market-closed" id="mkt-badge">—</span>
+      </div>
+      <div class="clock-item">
+        <span class="clock-label">IL</span>
+        <span class="clock-val" id="il-time">--:--</span>
+      </div>
+      <div class="clock-item">
+        <span class="clock-label">NY</span>
+        <span class="clock-val" id="ny-time">--:--</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COUNTDOWN BAR -->
+<div class="countdown-bar">
+  <span class="cd-label" id="cd-label">ספירה לאחור לפתיחת השוק</span>
+  <div class="cd-timer" id="cd-timer">
+    <span id="cd-h">--</span><span class="cd-colon">:</span><span id="cd-m">--</span><span class="cd-colon">:</span><span id="cd-s">--</span>
+  </div>
+  <span class="cd-session cd-closed" id="cd-session">—</span>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track" id="ticker-track">
+    <!-- Populated by data -->
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- Search + Best Signal -->
+  <div class="search-row">
+    <input class="search-input" placeholder="חפש מניה... (AAPL, TSLA, NVDA)" id="search-box">
+    <div class="best-signal" id="best-sig" onclick="tv('PLTR')">
+      <div class="best-score" id="bs-score">--</div>
+      <div class="best-info">
+        <div class="best-label">סיגנל מוביל</div>
+        <div class="best-sym" id="bs-sym">ממתין לסריקה</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Metrics -->
+  <div class="metrics">
+    <div class="metric-card mc-pnl">
+      <div class="metric-label">P&L</div>
+      <div class="metric-value clr-green" id="m-pnl">+$0</div>
+      <div class="metric-sub" id="m-pnl-pct">0%</div>
+    </div>
+    <div class="metric-card mc-wr">
+      <div class="metric-label">WIN RATE</div>
+      <div class="metric-value clr-amber" id="m-wr">0%</div>
+      <div class="metric-sub" id="m-wr-detail">0W/0L</div>
+    </div>
+    <div class="metric-card mc-pos">
+      <div class="metric-label">פוזיציות</div>
+      <div class="metric-value clr-blue" id="m-pos">0</div>
+      <div class="metric-sub" id="m-mkt">—</div>
+    </div>
+    <div class="metric-card mc-sig">
+      <div class="metric-label">סיגנלים</div>
+      <div class="metric-value clr-purple" id="m-sig">0</div>
+      <div class="metric-sub" id="m-thresh">סף: 70</div>
+    </div>
+    <div class="metric-card mc-mac">
+      <div class="metric-label">מאקרו</div>
+      <div class="metric-value clr-amber">VIX</div>
+      <div class="metric-sub">—</div>
+    </div>
+  </div>
+
+  <!-- Chart Area -->
+  <div class="chart-area">
+    <div class="chart-header">
+      <span class="chart-symbol" id="chart-sym">PLTR</span>
+      <div class="chart-tfs">
+        <button class="tf-btn" onclick="setTF(5)">5 דק</button>
+        <button class="tf-btn active" onclick="setTF(15)">15 דק</button>
+        <button class="tf-btn" onclick="setTF(60)">שעה</button>
+        <button class="tf-btn" onclick="setTF('D')">יום</button>
+        <button class="tf-btn" onclick="setTF('W')">שבוע</button>
+      </div>
+    </div>
+    <iframe id="tv-frame" class="tv-frame" src="" allowtransparency="true"></iframe>
+  </div>
+
+  <!-- Mini Charts -->
+  <div class="mini-charts">
+    <div class="mini-chart">
+      <div class="mini-chart-hdr">📈 S&P 500</div>
+      <iframe id="mc-spy" src="" allowtransparency="true"></iframe>
+    </div>
+    <div class="mini-chart">
+      <div class="mini-chart-hdr">😨 VIX — מדד הפחד</div>
+      <iframe id="mc-vix" src="" allowtransparency="true"></iframe>
+    </div>
+  </div>
+
+  <!-- Daily Stats -->
+  <div class="daily-bar">
+    <div class="daily-item"><div class="daily-val clr-green" id="d-wins">0</div><div class="daily-lbl">הצלחות</div></div>
+    <div class="daily-item"><div class="daily-val clr-red" id="d-losses">0</div><div class="daily-lbl">הפסדים</div></div>
+    <div class="daily-item"><div class="daily-val clr-amber" id="d-wr">0%</div><div class="daily-lbl">Win Rate</div></div>
+    <div class="daily-item"><div class="daily-val clr-green" id="d-pnl">+$0</div><div class="daily-lbl">P&L</div></div>
+    <div class="daily-item"><div class="daily-val clr-purple" id="d-sigs">0</div><div class="daily-lbl">סיגנלים</div></div>
+  </div>
+
+  <!-- 3-col grid -->
+  <div class="grid-3">
+    <!-- Positions -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">📊 פוזיציות</span>
+        <span class="panel-badge badge-blue" id="pos-count">0</span>
+      </div>
+      <div style="padding:0;overflow-x:auto">
+        <table class="data-table">
+          <thead><tr><th>מניה</th><th>כניסה</th><th>נוכחי</th><th>P&L</th><th>Trail</th></tr></thead>
+          <tbody id="pos-tbody">
+            <tr><td colspan="5" class="empty-state">אין פוזיציות פעילות</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Candidates -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">🌅 מועמדות</span>
+      </div>
+      <div class="panel-body">
+        <div class="cand-grid" id="cand-grid">
+          <div class="cand-item" onclick="tv('SPY')"><div class="cand-sym">SPY</div></div>
+          <div class="cand-item" onclick="tv('QQQ')"><div class="cand-sym">QQQ</div></div>
+          <div class="cand-item" onclick="tv('NVDA')"><div class="cand-sym">NVDA</div></div>
+          <div class="cand-item" onclick="tv('PLTR')"><div class="cand-sym">PLTR</div></div>
+          <div class="cand-item" onclick="tv('ARM')"><div class="cand-sym">ARM</div></div>
+          <div class="cand-item" onclick="tv('TSLA')"><div class="cand-sym">TSLA</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feed -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">⚡ פעילות</span>
+      </div>
+      <div class="panel-body" id="feed-body">
+        <div class="feed-item"><span class="feed-time">--:--</span><span style="font-size:13px">🤖</span><span class="feed-text">דאשבורד עודכן</span></div>
+        <div class="feed-item"><span class="feed-time"></span><span style="font-size:13px">📊</span><span class="feed-text">0 פוזיציות | 0 סיגנלים</span></div>
+        <div class="feed-item"><span class="feed-time"></span><span style="font-size:13px">📈</span><span class="feed-text">Win Rate: 0% (0W/0L)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2-col grid -->
+  <div class="grid-2">
+    <!-- Signals -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">🎯 סיגנלים</span>
+        <span class="panel-badge badge-green" id="sig-count">0</span>
+      </div>
+      <div class="panel-body" id="sig-body">
+        <div class="empty-state">אין סיגנלים היום</div>
+      </div>
+    </div>
+
+    <!-- Macro + Sectors -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">🌍 מאקרו + סקטורים</span>
+      </div>
+      <div class="panel-body">
+        <div class="macro-grid" id="macro-grid">
+          <div class="macro-item"><div class="macro-val clr-amber">--</div><div class="macro-name">VIX</div></div>
+          <div class="macro-item"><div class="macro-val clr-red">--</div><div class="macro-name">10Y</div></div>
+          <div class="macro-item"><div class="macro-val">--</div><div class="macro-name">DXY</div></div>
+          <div class="macro-item"><div class="macro-val clr-green">--</div><div class="macro-name">P/C</div></div>
+        </div>
+        <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border)">
+          <div id="sectors-body"></div>
+        </div>
+        <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border)">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px">Watchlist</div>
+          <div id="watchlist">
+            <span class="wl-chip" onclick="tv('SPY')">SPY</span>
+            <span class="wl-chip" onclick="tv('QQQ')">QQQ</span>
+            <span class="wl-chip" onclick="tv('NVDA')">NVDA</span>
+            <span class="wl-chip" onclick="tv('PLTR')">PLTR</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  V58 Institutional Signal Engine &bull; 18 מנועי ניתוח &bull; 
+  <a href="https://www.tradingview.com" target="_blank">TradingView</a> &bull; 
+  עודכן <span id="update-time">--:--</span>
+</div>
+
+<script>
+// ========== THEME MANAGEMENT ==========
+function setTheme(t) {
+  document.body.setAttribute('data-theme', t);
+  document.querySelectorAll('.theme-btn').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('data-t') === t);
+  });
+  localStorage.setItem('v58-theme', t);
+  // Update TradingView iframes for theme
+  updateAllCharts();
+}
+
+// Load saved theme
+(function() {
+  var saved = localStorage.getItem('v58-theme');
+  if (saved) setTheme(saved);
+})();
+
+// ========== TRADINGVIEW FUNCTIONS ==========
+var currentSymbol = 'PLTR';
+var currentInterval = '15';
+
+function getTVUrl(symbol, interval, mini) {
+  var theme = document.body.getAttribute('data-theme');
+  var tvTheme = (theme === 'light') ? 'light' : 'dark';
+  var bgColor = getComputedStyle(document.body).getPropertyValue('--tv-bg').trim();
+  var base = 'https://s.tradingview.com/widgetembed/?frameElementId=tvf&symbol=' + symbol +
+    '&interval=' + interval +
+    '&symboledit=' + (mini ? '0' : '1') +
+    '&saveimage=0&toolbarbg=' + bgColor +
+    '&theme=' + tvTheme +
+    '&style=' + (mini ? '3' : '1') +
+    '&timezone=Asia%2FJerusalem' +
+    '&withdateranges=' + (mini ? '0' : '1') +
+    '&hide_top_toolbar=' + (mini ? '1' : '0') +
+    '&allow_symbol_change=' + (mini ? '0' : '1') +
+    '&locale=he_IL' +
+    '&hidesidetoolbar=' + (mini ? '1' : '0');
+  if (!mini) {
+    base += '&studies=MAExp%4025&studies=MAExp%40200&studies=RSI%40tv-basicstudies';
+  }
+  return base;
+}
+
+function tv(s) {
+  if (!s) return;
+  currentSymbol = s;
+  document.getElementById('chart-sym').textContent = s;
+  document.getElementById('tv-frame').src = getTVUrl(s, currentInterval, false);
+  document.getElementById('search-box').value = '';
+}
+
+function setTF(t) {
+  currentInterval = String(t);
+  document.querySelectorAll('.tf-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (event && event.target) event.target.classList.add('active');
+  document.getElementById('tv-frame').src = getTVUrl(currentSymbol, currentInterval, false);
+}
+
+function updateAllCharts() {
+  document.getElementById('tv-frame').src = getTVUrl(currentSymbol, currentInterval, false);
+  document.getElementById('mc-spy').src = getTVUrl('SPY', 'D', true);
+  document.getElementById('mc-vix').src = getTVUrl('CBOE:VIX', 'D', true);
+}
+
+// Init charts
+updateAllCharts();
+
+// ========== CLOCK & MARKET STATUS ==========
+function updateClocks() {
+  var now = new Date();
+  
+  // Israel time
+  var il = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Jerusalem' }));
+  var ilH = String(il.getHours()).padStart(2, '0');
+  var ilM = String(il.getMinutes()).padStart(2, '0');
+  document.getElementById('il-time').textContent = ilH + ':' + ilM;
+  
+  // NY time
+  var ny = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+  var nyH = ny.getHours();
+  var nyM = ny.getMinutes();
+  var nyD = ny.getDay();
+  
+  document.getElementById('ny-time').textContent = 
+    String(nyH).padStart(2, '0') + ':' + String(nyM).padStart(2, '0');
+  
+  // Market status
+  var badge = document.getElementById('mkt-badge');
+  var isWeekday = nyD > 0 && nyD < 6;
+  var nyMinutes = nyH * 60 + nyM;
+  var preStart = 4 * 60;      // 4:00 AM
+  var regStart = 9 * 60 + 30;  // 9:30 AM
+  var regEnd = 16 * 60;        // 4:00 PM
+  var afterEnd = 20 * 60;      // 8:00 PM
+  
+  var session = '';
+  var sessionClass = '';
+  var sessionText = '';
+  var cdLabelText = '';
+  var targetMinutes = 0;
+  
+  if (!isWeekday) {
+    session = 'closed';
+    sessionClass = 'cd-closed';
+    sessionText = 'סגור — סוף שבוע';
+    cdLabelText = 'ספירה לאחור לפתיחת השוק';
+    // Calculate time to next Monday 9:30
+    var daysToMon = (8 - nyD) % 7 || 7;
+    targetMinutes = daysToMon * 24 * 60 + regStart - nyMinutes;
+  } else if (nyMinutes < preStart) {
+    session = 'closed';
+    sessionClass = 'cd-closed';
+    sessionText = 'סגור';
+    cdLabelText = 'לפתיחת Pre-Market';
+    targetMinutes = preStart - nyMinutes;
+  } else if (nyMinutes < regStart) {
+    session = 'premarket';
+    sessionClass = 'cd-premarket';
+    sessionText = '🟡 Pre-Market';
+    cdLabelText = 'לפתיחת מסחר רגיל';
+    targetMinutes = regStart - nyMinutes;
+  } else if (nyMinutes < regEnd) {
+    session = 'regular';
+    sessionClass = 'cd-regular';
+    sessionText = '🟢 מסחר רגיל';
+    cdLabelText = 'לסגירת השוק';
+    targetMinutes = regEnd - nyMinutes;
+  } else if (nyMinutes < afterEnd) {
+    session = 'afterhours';
+    sessionClass = 'cd-afterhours';
+    sessionText = '🟣 After Hours';
+    cdLabelText = 'לסגירת After Hours';
+    targetMinutes = afterEnd - nyMinutes;
+  } else {
+    session = 'closed';
+    sessionClass = 'cd-closed';
+    sessionText = 'סגור';
+    cdLabelText = 'לפתיחת Pre-Market מחר';
+    targetMinutes = (24 * 60 - nyMinutes) + preStart;
+  }
+  
+  // Update badge
+  if (session === 'regular') {
+    badge.textContent = 'פתוח';
+    badge.className = 'market-badge market-open';
+  } else {
+    badge.textContent = session === 'premarket' ? 'Pre' : session === 'afterhours' ? 'AH' : 'סגור';
+    badge.className = 'market-badge ' + (session === 'closed' ? 'market-closed' : 'market-open');
+  }
+  
+  // Update countdown
+  document.getElementById('cd-label').textContent = cdLabelText;
+  var cdSess = document.getElementById('cd-session');
+  cdSess.textContent = sessionText;
+  cdSess.className = 'cd-session ' + sessionClass;
+  
+  if (targetMinutes < 0) targetMinutes = 0;
+  var totalSec = targetMinutes * 60 - now.getSeconds();
+  if (totalSec < 0) totalSec = 0;
+  var h = Math.floor(totalSec / 3600);
+  var m = Math.floor((totalSec % 3600) / 60);
+  var s = totalSec % 60;
+  document.getElementById('cd-h').textContent = String(h).padStart(2, '0');
+  document.getElementById('cd-m').textContent = String(m).padStart(2, '0');
+  document.getElementById('cd-s').textContent = String(s).padStart(2, '0');
+}
+
+updateClocks();
+setInterval(updateClocks, 1000);
+
+// ========== SEARCH ==========
+document.getElementById('search-box').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    var val = this.value.toUpperCase().trim();
+    if (val) tv(val);
+  }
+});
+
+// ========== SPARKLINE GENERATOR ==========
+function generateSparklineSVG(trend, color) {
+  // Generate simple sparkline SVG
+  var points = [];
+  var w = 48, h = 20;
+  var steps = 12;
+  var val = 50;
+  for (var i = 0; i <= steps; i++) {
+    val += (Math.random() - (trend === 'up' ? 0.35 : 0.65)) * 8;
+    val = Math.max(5, Math.min(95, val));
+    points.push((i / steps * w).toFixed(1) + ',' + ((1 - val / 100) * h).toFixed(1));
+  }
+  return '<svg class="sparkline" viewBox="0 0 ' + w + ' ' + h + '" xmlns="http://www.w3.org/2000/svg">' +
+    '<polyline fill="none" stroke="' + color + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="' + points.join(' ') + '"/>' +
+    '</svg>';
+}
+
+// ========== UPDATE TIME ==========
+(function() {
+  var now = new Date();
+  var il = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Jerusalem' }));
+  document.getElementById('update-time').textContent = 
+    String(il.getHours()).padStart(2,'0') + ':' + String(il.getMinutes()).padStart(2,'0');
+})();
+</script>
+</body>
+</html>
