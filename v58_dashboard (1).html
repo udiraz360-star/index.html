@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V58 Trading Dashboard</title>
+<meta http-equiv="refresh" content="120">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e1a; --card: #111827; --card-h: #1a2236;
+  --border: #1e293b; --border-l: #334155;
+  --text: #e2e8f0; --dim: #94a3b8; --muted: #64748b;
+  --green: #10b981; --green-bg: rgba(16,185,129,0.1);
+  --red: #ef4444; --red-bg: rgba(239,68,68,0.1);
+  --blue: #3b82f6; --blue-bg: rgba(59,130,246,0.1);
+  --amber: #f59e0b; --amber-bg: rgba(245,158,11,0.1);
+  --purple: #8b5cf6;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Rubik',sans-serif; background:var(--bg); color:var(--text); direction:rtl; padding:20px; min-height:100vh; }
+.dash { max-width:1400px; margin:0 auto; }
+.header { display:flex; justify-content:space-between; align-items:center; padding:16px 0 24px; border-bottom:1px solid var(--border); margin-bottom:24px; }
+.header h1 { font-size:22px; font-weight:600; background:linear-gradient(135deg,var(--green),var(--blue)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.header-info { font-size:13px; color:var(--dim); display:flex; align-items:center; gap:12px; }
+.dot { width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+.metrics { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; margin-bottom:24px; }
+.m-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; }
+.m-label { font-size:11px; color:var(--muted); letter-spacing:.5px; margin-bottom:8px; }
+.m-val { font-family:'IBM Plex Mono',monospace; font-size:24px; font-weight:600; }
+.m-sub { font-size:12px; color:var(--dim); margin-top:4px; }
+.positive { color:var(--green); }
+.negative { color:var(--red); }
+
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
+@media(max-width:900px) { .grid { grid-template-columns:1fr; } }
+.full { grid-column:1/-1; }
+
+.card { background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+.card-h { display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid var(--border); }
+.card-t { font-size:14px; font-weight:500; }
+.badge { font-size:11px; padding:3px 10px; border-radius:20px; font-weight:500; }
+.b-green { background:var(--green-bg); color:var(--green); }
+.b-blue { background:var(--blue-bg); color:var(--blue); }
+.b-amber { background:var(--amber-bg); color:var(--amber); }
+.card-b { padding:16px 18px; }
+
+table { width:100%; border-collapse:collapse; }
+th { font-size:11px; color:var(--muted); text-align:right; padding:8px 10px; border-bottom:1px solid var(--border); font-weight:400; }
+td { font-size:13px; padding:10px; border-bottom:1px solid var(--border); }
+tr:last-child td { border-bottom:none; }
+tr:hover { background:var(--card-h); }
+.mono { font-family:'IBM Plex Mono',monospace; }
+.sym { font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:14px; }
+.empty { text-align:center; padding:30px; color:var(--muted); }
+
+.sig-item { padding:12px 0; border-bottom:1px solid var(--border); display:flex; gap:12px; }
+.sig-item:last-child { border-bottom:none; }
+.sig-score { width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:16px;flex-shrink:0; }
+.sc-high { background:var(--green-bg);color:var(--green); }
+.sc-mid { background:var(--amber-bg);color:var(--amber); }
+.sc-low { background:var(--red-bg);color:var(--red); }
+.sig-info { flex:1; }
+.sig-top { display:flex;justify-content:space-between;align-items:center;margin-bottom:4px; }
+.sig-dir { font-size:12px; }
+.sig-detail { font-size:12px;color:var(--dim); }
+
+.macro-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:10px; }
+@media(max-width:600px) { .macro-grid { grid-template-columns:repeat(2,1fr); } }
+.macro-item { text-align:center;padding:12px 8px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid var(--border); }
+.macro-icon { font-size:20px;margin-bottom:6px; }
+.macro-val { font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;margin-bottom:2px; }
+.macro-name { font-size:11px;color:var(--muted); }
+
+.feed-item { display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px; }
+.feed-item:last-child { border-bottom:none; }
+.feed-time { font-family:'IBM Plex Mono',monospace;color:var(--muted);font-size:11px;min-width:45px; }
+.feed-text { color:var(--dim); }
+
+.footer { text-align:center;padding:20px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);margin-top:24px; }
+</style>
+</head>
+<body>
+<div class="dash">
+  <div class="header">
+    <h1>🏛️ V58 Trading Dashboard</h1>
+    <div class="header-info">
+      <div class="dot"></div>
+      <span>עודכן: 15:02:06</span>
+      <span style="color:var(--muted)">│</span>
+      <span>28/03/2026</span>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="m-card"><div class="m-label">P&L פוזיציות</div><div class="m-val negative">$915</div><div class="m-sub">-3.3% ממוצע</div></div>
+    <div class="m-card"><div class="m-label">Win Rate שבועי</div><div class="m-val" style="color:#ef4444">22%</div><div class="m-sub">2W / 7L</div></div>
+    <div class="m-card"><div class="m-label">פוזיציות פתוחות</div><div class="m-val" style="color:var(--blue)">11</div><div class="m-sub">🔴 סוף שבוע — אין מסח</div></div>
+    <div class="m-card"><div class="m-label">סיגנלים היום</div><div class="m-val" style="color:var(--purple)">0</div><div class="m-sub">סף דינמי: 65</div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-h"><span class="card-t">🌍 מאקרו כלכלי</span></div>
+    <div class="card-b">
+        <div class="macro-grid">
+            <div class="macro-item"><div class="macro-icon">😨</div><div class="macro-val">31.0</div><div class="macro-name">VIX</div></div>
+            <div class="macro-item"><div class="macro-icon">📈</div><div class="macro-val">4.44%</div><div class="macro-name">אג"ח 10Y</div></div>
+            <div class="macro-item"><div class="macro-icon">💵</div><div class="macro-val">🔴 דולר מתח</div><div class="macro-name">דולר</div></div>
+            <div class="macro-item"><div class="macro-icon">📊</div><div class="macro-val">0.92</div><div class="macro-name">Put/Call</div></div>
+        </div>
+        <div style="text-align:center;margin-top:8px;font-size:13px">🔴 סיכון גבוה (Bearish Macro)</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-h"><span class="card-t">📊 פוזיציות פתוחות</span><span class="badge b-blue">11</span></div>
+      <div class="card-b" style="padding:0">
+        <table><thead><tr><th>מניה</th><th>כניסה</th><th>נוכחי</th><th>P&L</th><th>סטטוס</th></tr></thead>
+        <tbody><tr>
+            <td><span class="sym">DLO</span></td>
+            <td class="mono">$12.67</td>
+            <td class="mono">$12.27</td>
+            <td class="mono negative">-3.2%</td>
+            <td>⚪</td>
+        </tr><tr>
+            <td><span class="sym">DIOD</span></td>
+            <td class="mono">$66.99</td>
+            <td class="mono">$68.20</td>
+            <td class="mono positive">+1.8%</td>
+            <td>🟡</td>
+        </tr><tr>
+            <td><span class="sym">PENN</span></td>
+            <td class="mono">$14.51</td>
+            <td class="mono">$13.77</td>
+            <td class="mono negative">-5.1%</td>
+            <td>⚪</td>
+        </tr><tr>
+            <td><span class="sym">CYTK</span></td>
+            <td class="mono">$63.15</td>
+            <td class="mono">$62.50</td>
+            <td class="mono negative">-1.0%</td>
+            <td>⚪</td>
+        </tr><tr>
+            <td><span class="sym">HUT</span></td>
+            <td class="mono">$52.94</td>
+            <td class="mono">$47.41</td>
+            <td class="mono negative">-10.5%</td>
+            <td>⚪</td>
+        </tr><tr>
+            <td><span class="sym">SEDG</span></td>
+            <td class="mono">$46.73</td>
+            <td class="mono">$51.76</td>
+            <td class="mono positive">+10.8%</td>
+            <td>🟡</td>
+        </tr><tr>
+            <td><span class="sym">XPEV</span></td>
+            <td class="mono">$18.87</td>
+            <td class="mono">$16.93</td>
+            <td class="mono negative">-10.3%</td>
+            <td>⚪</td>
+        </tr><tr>
+            <td><span class="sym">PLTR</span></td>
+            <td class="mono">$159.20</td>
+            <td class="mono">$143.06</td>
+            <td class="mono negative">-10.1%</td>
+            <td>⚪</td>
+        </tr><tr>
+            <td><span class="sym">ALGM</span></td>
+            <td class="mono">$33.00</td>
+            <td class="mono">$30.12</td>
+            <td class="mono negative">-8.7%</td>
+            <td>⚪</td>
+        </tr><tr>
+            <td><span class="sym">LC</span></td>
+            <td class="mono">$15.08</td>
+            <td class="mono">$13.87</td>
+            <td class="mono negative">-8.0%</td>
+            <td>⚪</td>
+        </tr><tr>
+            <td><span class="sym">BRZE</span></td>
+            <td class="mono">$21.36</td>
+            <td class="mono">$23.00</td>
+            <td class="mono positive">+7.7%</td>
+            <td>⚪</td>
+        </tr></tbody></table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><span class="card-t">🎯 סיגנלים אחרונים</span><span class="badge b-green">0 היום</span></div>
+      <div class="card-b"><div class="empty">אין סיגנלים היום</div></div>
+    </div>
+    <div class="card full">
+      <div class="card-h"><span class="card-t">⚡ פעילות</span></div>
+      <div class="card-b"><div class="feed-item"><span class="feed-time">15:02</span><span>🤖</span><span class="feed-text">דאשבורד עודכן</span></div><div class="feed-item"><span class="feed-time"></span><span>📊</span><span class="feed-text">11 פוזיציות │ 0 סיגנלים היום</span></div><div class="feed-item"><span class="feed-time"></span><span>📈</span><span class="feed-text">Win Rate: 22% (2W/7L)</span></div><div class="feed-item"><span class="feed-time"></span><span>🌍</span><span class="feed-text">🔴 סוף שבוע — אין מסחר</span></div></div>
+    </div>
+  </div>
+
+  <div class="footer">🤖 V58 Trading Engine │ עודכן אוטומטית כל 2 דקות │ 28/03/2026 15:02</div>
+</div>
+</body>
+</html>
