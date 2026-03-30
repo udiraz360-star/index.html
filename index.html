@@ -1,762 +1,379 @@
-<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"><title>V58 Institutional Signal Engine</title><meta http-equiv="refresh" content="120"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Heebo:wght@300;400;500;600;700;900&display=swap" rel="stylesheet"><style>/* ========== CSS VARIABLES / THEMES ========== */
+<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>V59 AI Council Dashboard</title><meta http-equiv="refresh" content="120"><link rel="preconnect" href="https://fonts.googleapis.com"><style>
 :root {
-  --font-body: 'Heebo', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  --radius: 12px;
-  --radius-sm: 8px;
-  --transition: 0.3s cubic-bezier(.4,0,.2,1);
-  --shadow-card: 0 2px 12px rgba(0,0,0,.08);
-}
-
-/* DARK (default) */
-[data-theme="dark"] {
-  --bg-root: #060a14;
-  --bg-surface: #0d1224;
-  --bg-card: #111827;
-  --bg-hover: #1a2236;
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-card: #151d2e;
+  --bg-hover: #1c2640;
   --border: #1e293b;
-  --border-accent: #334155;
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-dim: #475569;
-  --accent-green: #10b981;
+  --border-accent: #2d3a54;
+  --text-primary: #e8ecf4;
+  --text-secondary: #8b9dc3;
+  --text-muted: #506080;
+  --accent-green: #22c55e;
   --accent-red: #ef4444;
   --accent-amber: #f59e0b;
   --accent-blue: #3b82f6;
   --accent-purple: #8b5cf6;
-  --green-bg: rgba(16,185,129,.12);
-  --red-bg: rgba(239,68,68,.12);
-  --amber-bg: rgba(245,158,11,.12);
-  --blue-bg: rgba(59,130,246,.12);
-  --purple-bg: rgba(139,92,246,.12);
-  --gradient-hero: linear-gradient(135deg, #0d1224 0%, #111827 50%, #0f172a 100%);
-  --topbar-bg: #0a0f1e;
-  --ticker-bg: #060a14;
-  --shadow-card: 0 2px 16px rgba(0,0,0,.3);
-  --chart-toolbar-bg: #0d1224;
-  --tv-theme: dark;
-  --tv-bg: 0d1224;
-  --spark-up: #10b981;
-  --spark-down: #ef4444;
-  --glow: 0 0 20px rgba(59,130,246,.15);
+  --accent-cyan: #06b6d4;
+  --glow-green: rgba(34,197,94,.15);
+  --glow-red: rgba(239,68,68,.12);
+  --glow-blue: rgba(59,130,246,.12);
+  --glow-purple: rgba(139,92,246,.12);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow: 0 2px 8px rgba(0,0,0,.3);
+  --font: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --mono: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
 }
 
-/* LIGHT */
-[data-theme="light"] {
-  --bg-root: #f8fafc;
-  --bg-surface: #ffffff;
-  --bg-card: #ffffff;
-  --bg-hover: #f1f5f9;
-  --border: #e2e8f0;
-  --border-accent: #cbd5e1;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --text-dim: #cbd5e1;
-  --accent-green: #059669;
-  --accent-red: #dc2626;
-  --accent-amber: #d97706;
-  --accent-blue: #2563eb;
-  --accent-purple: #7c3aed;
-  --green-bg: rgba(5,150,105,.08);
-  --red-bg: rgba(220,38,38,.08);
-  --amber-bg: rgba(217,119,6,.08);
-  --blue-bg: rgba(37,99,235,.08);
-  --purple-bg: rgba(124,58,237,.08);
-  --gradient-hero: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
-  --topbar-bg: #ffffff;
-  --ticker-bg: #f8fafc;
-  --shadow-card: 0 1px 8px rgba(0,0,0,.06);
-  --chart-toolbar-bg: #ffffff;
-  --tv-theme: light;
-  --tv-bg: ffffff;
-  --spark-up: #059669;
-  --spark-down: #dc2626;
-  --glow: 0 0 20px rgba(37,99,235,.08);
-}
-
-/* HITECH */
-[data-theme="hitech"] {
-  --bg-root: #000000;
-  --bg-surface: #0a0a0a;
-  --bg-card: #111111;
-  --bg-hover: #1a1a1a;
-  --border: #222222;
-  --border-accent: #333333;
-  --text-primary: #00ff88;
-  --text-secondary: #00cc6a;
-  --text-muted: #006633;
-  --text-dim: #004422;
-  --accent-green: #00ff88;
-  --accent-red: #ff3355;
-  --accent-amber: #ffaa00;
-  --accent-blue: #00ccff;
-  --accent-purple: #aa55ff;
-  --green-bg: rgba(0,255,136,.08);
-  --red-bg: rgba(255,51,85,.08);
-  --amber-bg: rgba(255,170,0,.08);
-  --blue-bg: rgba(0,204,255,.08);
-  --purple-bg: rgba(170,85,255,.08);
-  --gradient-hero: linear-gradient(135deg, #000 0%, #0a0a0a 50%, #050505 100%);
-  --topbar-bg: #050505;
-  --ticker-bg: #000000;
-  --shadow-card: 0 0 20px rgba(0,255,136,.05);
-  --chart-toolbar-bg: #0a0a0a;
-  --tv-theme: dark;
-  --tv-bg: 0a0a0a;
-  --spark-up: #00ff88;
-  --spark-down: #ff3355;
-  --glow: 0 0 30px rgba(0,255,136,.1);
-}
-
-/* OCEAN BLUE */
-[data-theme="ocean"] {
-  --bg-root: #0a1628;
-  --bg-surface: #0f1f3d;
-  --bg-card: #132744;
-  --bg-hover: #1a3358;
-  --border: #1e3a5f;
-  --border-accent: #2a5082;
-  --text-primary: #d4e6ff;
-  --text-secondary: #8ab4f8;
-  --text-muted: #5b8dd4;
-  --text-dim: #3a6aad;
-  --accent-green: #34d399;
-  --accent-red: #fb7185;
-  --accent-amber: #fbbf24;
-  --accent-blue: #60a5fa;
+[data-theme="midnight"] {
+  --bg-primary: #070b14;
+  --bg-secondary: #0c1322;
+  --bg-card: #111a2e;
+  --border: #162040;
+  --accent-blue: #4f8fff;
   --accent-purple: #a78bfa;
-  --green-bg: rgba(52,211,153,.1);
-  --red-bg: rgba(251,113,133,.1);
-  --amber-bg: rgba(251,191,36,.1);
-  --blue-bg: rgba(96,165,250,.1);
-  --purple-bg: rgba(167,139,250,.1);
-  --gradient-hero: linear-gradient(135deg, #0a1628 0%, #0f1f3d 50%, #0d1a33 100%);
-  --topbar-bg: #081424;
-  --ticker-bg: #0a1628;
-  --shadow-card: 0 2px 20px rgba(10,22,40,.5);
-  --chart-toolbar-bg: #0f1f3d;
-  --tv-theme: dark;
-  --tv-bg: 0f1f3d;
-  --spark-up: #34d399;
-  --spark-down: #fb7185;
-  --glow: 0 0 24px rgba(96,165,250,.12);
 }
 
-/* ========== GLOBAL RESET ========== */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px;-webkit-text-size-adjust:100%}
-body{
-  font-family:var(--font-body);
-  background:var(--bg-root);
-  color:var(--text-secondary);
-  direction:rtl;
-  min-height:100vh;
-  transition:background var(--transition), color var(--transition);
-  overflow-x:hidden;
+[data-theme="emerald"] {
+  --bg-primary: #071210;
+  --bg-secondary: #0c1f1a;
+  --bg-card: #122a23;
+  --border: #1a3d32;
+  --accent-blue: #22d3ee;
+  --accent-green: #34d399;
+  --accent-purple: #2dd4bf;
 }
 
-/* ========== TOPBAR ========== */
-.topbar{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:12px 24px;
-  background:var(--topbar-bg);
-  border-bottom:1px solid var(--border);
-  position:sticky;top:0;z-index:100;
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-}
-.logo{
-  display:flex;align-items:center;gap:10px;
-  font-size:18px;font-weight:700;color:var(--text-primary);
-  letter-spacing:-0.5px;
-}
-.logo-dot{
-  width:10px;height:10px;border-radius:50%;
-  background:var(--accent-green);
-  box-shadow:0 0 12px var(--accent-green);
-  animation:pulse 2s ease-in-out infinite;
-}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-.logo-v{font-size:11px;font-weight:400;color:var(--text-muted);margin-right:6px}
-
-.top-right{display:flex;align-items:center;gap:16px}
-
-.clock-group{display:flex;gap:16px;font-size:12px;color:var(--text-muted)}
-.clock-item{display:flex;align-items:center;gap:4px}
-.clock-label{font-size:10px;color:var(--text-muted)}
-.clock-val{font-family:var(--font-mono);font-weight:600;color:var(--text-primary);font-size:13px}
-.market-badge{
-  font-size:11px;font-weight:600;
-  padding:3px 10px;border-radius:20px;
-  transition:all var(--transition);
-}
-.market-open{background:var(--green-bg);color:var(--accent-green)}
-.market-closed{background:var(--red-bg);color:var(--accent-red)}
-
-/* Theme Switcher */
-.theme-switcher{
-  display:flex;gap:4px;
-  background:var(--bg-card);
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:3px;
-}
-.theme-btn{
-  width:28px;height:28px;border-radius:6px;border:2px solid transparent;
-  cursor:pointer;transition:all var(--transition);
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;background:transparent;
-}
-.theme-btn:hover{transform:scale(1.1)}
-.theme-btn.active{border-color:var(--accent-blue);box-shadow:var(--glow)}
-.theme-btn[data-t="light"]{background:#f8fafc;color:#0f172a}
-.theme-btn[data-t="dark"]{background:#111827;color:#e2e8f0}
-.theme-btn[data-t="hitech"]{background:#000;color:#00ff88}
-.theme-btn[data-t="ocean"]{background:#0f1f3d;color:#60a5fa}
-
-/* ========== MARKET COUNTDOWN ========== */
-.countdown-bar{
-  background:var(--bg-surface);
-  border-bottom:1px solid var(--border);
-  padding:8px 24px;
-  display:flex;align-items:center;justify-content:center;gap:24px;
-  font-size:12px;
-}
-.cd-label{color:var(--text-muted);font-size:11px}
-.cd-timer{
-  font-family:var(--font-mono);font-weight:700;font-size:20px;
-  color:var(--text-primary);letter-spacing:2px;
-}
-.cd-timer span{
-  display:inline-block;
-  background:var(--bg-card);
-  border:1px solid var(--border);
-  border-radius:6px;
-  padding:2px 6px;
-  min-width:32px;text-align:center;
-  margin:0 1px;
-}
-.cd-colon{color:var(--text-muted);margin:0 2px;animation:blink 1s step-end infinite}
-@keyframes blink{50%{opacity:0}}
-.cd-session{
-  font-size:11px;font-weight:600;
-  padding:3px 12px;border-radius:16px;
-}
-.cd-premarket{background:var(--amber-bg);color:var(--accent-amber)}
-.cd-regular{background:var(--green-bg);color:var(--accent-green)}
-.cd-afterhours{background:var(--purple-bg);color:var(--accent-purple)}
-.cd-closed{background:rgba(100,116,139,.1);color:var(--text-muted)}
-
-/* ========== TICKER ========== */
-.ticker{
-  overflow:hidden;background:var(--ticker-bg);
-  border-bottom:1px solid var(--border);
-  height:38px;position:relative;
-}
-.ticker::before,.ticker::after{
-  content:'';position:absolute;top:0;bottom:0;width:40px;z-index:2;pointer-events:none;
-}
-.ticker::before{right:0;background:linear-gradient(to left,var(--ticker-bg),transparent)}
-.ticker::after{left:0;background:linear-gradient(to right,var(--ticker-bg),transparent)}
-.ticker-track{
-  display:flex;gap:32px;
-  animation:scroll 50s linear infinite;
-  white-space:nowrap;height:38px;align-items:center;
-  position:absolute;right:0;
-}
-.ticker:hover .ticker-track{animation-play-state:paused}
-@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(50%)}}
-.tk{
-  display:flex;align-items:center;gap:8px;
-  font-size:12px;cursor:pointer;padding:4px 8px;
-  border-radius:6px;transition:background var(--transition);
-}
-.tk:hover{background:var(--blue-bg)}
-.tk-sym{font-weight:700;color:var(--text-primary);font-size:13px}
-.tk-price{font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)}
-.tk-chg{
-  font-family:var(--font-mono);font-size:11px;
-  padding:2px 6px;border-radius:4px;font-weight:500;
-}
-.chg-up{color:var(--accent-green);background:var(--green-bg)}
-.chg-dn{color:var(--accent-red);background:var(--red-bg)}
-
-/* ========== MAIN CONTENT ========== */
-.main{padding:16px 24px;max-width:1600px;margin:0 auto}
-
-/* Search Row */
-.search-row{display:flex;gap:12px;margin-bottom:16px;align-items:center}
-.search-input{
-  flex:1;background:var(--bg-card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:10px 16px;
-  color:var(--text-primary);font-size:14px;
-  font-family:var(--font-body);
-  direction:ltr;text-align:right;
-  transition:all var(--transition);
-}
-.search-input:focus{outline:none;border-color:var(--accent-blue);box-shadow:var(--glow)}
-.search-input::placeholder{color:var(--text-muted)}
-
-.best-signal{
-  background:linear-gradient(90deg,var(--green-bg),transparent);
-  border:1px solid rgba(16,185,129,.2);
-  border-radius:var(--radius);
-  padding:8px 16px;
-  display:flex;align-items:center;gap:12px;
-  cursor:pointer;transition:all var(--transition);
-  min-width:220px;
-}
-.best-signal:hover{border-color:var(--accent-green)}
-.best-score{
-  background:var(--green-bg);color:var(--accent-green);
-  font-weight:700;font-size:18px;
-  padding:4px 10px;border-radius:8px;
-  font-family:var(--font-mono);
-}
-.best-info{font-size:12px}
-.best-label{color:var(--text-muted);font-size:10px}
-.best-sym{font-weight:600;color:var(--text-primary)}
-
-/* ========== METRICS ========== */
-.metrics{
-  display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px;
-}
-.metric-card{
-  background:var(--bg-card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:14px 16px;
-  transition:all var(--transition);
-  position:relative;overflow:hidden;
-}
-.metric-card::after{
-  content:'';position:absolute;top:0;right:0;left:0;height:3px;
-  border-radius:var(--radius) var(--radius) 0 0;
-  opacity:0;transition:opacity var(--transition);
-}
-.metric-card:hover::after{opacity:1}
-.metric-card:hover{box-shadow:var(--shadow-card);transform:translateY(-1px)}
-.mc-pnl::after{background:var(--accent-green)}.mc-wr::after{background:var(--accent-amber)}
-.mc-pos::after{background:var(--accent-blue)}.mc-sig::after{background:var(--accent-purple)}
-.mc-mac::after{background:var(--accent-amber)}
-.metric-label{font-size:11px;color:var(--text-muted);margin-bottom:6px;font-weight:500}
-.metric-value{font-size:24px;font-weight:700;font-family:var(--font-mono);line-height:1}
-.metric-sub{font-size:11px;color:var(--text-muted);margin-top:4px;font-family:var(--font-mono)}
-.clr-green{color:var(--accent-green)}.clr-red{color:var(--accent-red)}
-.clr-amber{color:var(--accent-amber)}.clr-blue{color:var(--accent-blue)}
-.clr-purple{color:var(--accent-purple)}
-
-/* ========== CHART AREA ========== */
-.chart-area{
-  background:var(--bg-surface);
-  border-radius:var(--radius);
-  border:1px solid var(--border);
-  margin-bottom:16px;overflow:hidden;
-  box-shadow:var(--shadow-card);
-}
-.chart-header{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:10px 16px;
-  border-bottom:1px solid var(--border);
-  background:var(--chart-toolbar-bg);
-}
-.chart-symbol{font-size:20px;font-weight:700;color:var(--text-primary);font-family:var(--font-mono)}
-.chart-tfs{display:flex;gap:4px}
-.tf-btn{
-  padding:6px 12px;font-size:11px;border-radius:6px;
-  border:1px solid var(--border);
-  background:transparent;color:var(--text-muted);
-  cursor:pointer;font-family:var(--font-body);font-weight:500;
-  transition:all var(--transition);
-}
-.tf-btn:hover{color:var(--text-primary);border-color:var(--border-accent)}
-.tf-btn.active{background:var(--blue-bg);color:var(--accent-blue);border-color:var(--accent-blue)}
-.tv-frame{width:100%;height:520px;border:none}
-
-/* Mini Charts Row */
-.mini-charts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-.mini-chart{
-  background:var(--bg-surface);border-radius:var(--radius);
-  border:1px solid var(--border);overflow:hidden;
-  box-shadow:var(--shadow-card);
-}
-.mini-chart-hdr{
-  padding:8px 14px;border-bottom:1px solid var(--border);
-  font-size:13px;font-weight:600;color:var(--text-primary);
-  display:flex;align-items:center;gap:6px;
-}
-.mini-chart iframe{width:100%;height:220px;border:none}
-
-/* ========== DAILY STATS BAR ========== */
-.daily-bar{
-  background:var(--blue-bg);border:1px solid rgba(59,130,246,.15);
-  border-radius:var(--radius);padding:12px;margin-bottom:16px;
-  display:flex;justify-content:space-around;text-align:center;
-}
-.daily-item .daily-val{font-family:var(--font-mono);font-weight:700;font-size:18px}
-.daily-item .daily-lbl{font-size:10px;color:var(--text-muted);margin-top:2px}
-
-/* ========== GRID LAYOUTS ========== */
-.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-
-/* ========== PANEL (card) ========== */
-.panel{
-  background:var(--bg-card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  overflow:hidden;
-  transition:box-shadow var(--transition);
-}
-.panel:hover{box-shadow:var(--shadow-card)}
-.panel-header{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:10px 16px;border-bottom:1px solid var(--border);
-}
-.panel-title{font-size:13px;font-weight:600;color:var(--text-primary)}
-.panel-badge{
-  font-size:10px;padding:2px 8px;border-radius:12px;font-weight:600;
-}
-.badge-green{background:var(--green-bg);color:var(--accent-green)}
-.badge-blue{background:var(--blue-bg);color:var(--accent-blue)}
-.badge-amber{background:var(--amber-bg);color:var(--accent-amber)}
-.panel-body{padding:12px 16px}
-
-/* ========== TABLE ========== */
-.data-table{width:100%;border-collapse:collapse}
-.data-table th{
-  font-size:11px;color:var(--text-muted);text-align:right;
-  padding:8px 10px;border-bottom:1px solid var(--border);font-weight:500;
-}
-.data-table td{
-  font-size:13px;padding:10px;
-  border-bottom:1px solid rgba(30,41,59,.2);
-  cursor:pointer;transition:background var(--transition);
-}
-.data-table tr:hover td{background:var(--bg-hover)}
-.data-table .mono{font-family:var(--font-mono);font-size:12px}
-.data-table .sym-cell{display:flex;align-items:center;gap:8px}
-.sym-name{font-weight:700;font-size:14px;color:var(--text-primary)}
-.style-tag{
-  font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600;
-}
-.tag-day{background:var(--amber-bg);color:var(--accent-amber)}
-.tag-swing{background:var(--blue-bg);color:var(--accent-blue)}
-
-/* Sparkline cell */
-.spark-cell{display:flex;align-items:center;gap:6px}
-.sparkline{width:48px;height:20px}
-
-/* ========== SIGNALS ========== */
-.signal-card{
-  padding:12px 0;border-bottom:1px solid rgba(30,41,59,.2);
-  display:flex;gap:12px;cursor:pointer;
-  transition:background var(--transition);
-}
-.signal-card:last-child{border:none}
-.signal-card:hover{background:var(--bg-hover);border-radius:8px;margin:0 -8px;padding:12px 8px}
-.signal-score{
-  width:44px;height:44px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-weight:700;font-size:16px;font-family:var(--font-mono);flex-shrink:0;
-}
-.score-high{background:var(--green-bg);color:var(--accent-green)}
-.score-mid{background:var(--amber-bg);color:var(--accent-amber)}
-.signal-info{flex:1}
-.signal-top{display:flex;justify-content:space-between;margin-bottom:4px;font-size:13px}
-.signal-detail{font-size:11px;color:var(--text-muted);font-family:var(--font-mono)}
-
-/* ========== MACRO ========== */
-.macro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.macro-item{
-  text-align:center;padding:10px 6px;border-radius:8px;
-  background:rgba(255,255,255,.02);border:1px solid var(--border);
-}
-.macro-val{font-family:var(--font-mono);font-size:16px;font-weight:600}
-.macro-name{font-size:10px;color:var(--text-muted);margin-top:2px}
-
-/* Sectors */
-.sector-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.sector-name{font-size:11px;min-width:60px;color:var(--text-secondary);text-align:left}
-.sector-bar{flex:1;height:12px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden}
-.sector-bar-fill{height:100%;border-radius:4px;transition:width 0.5s ease}
-.sector-pct{font-size:11px;min-width:45px;text-align:left;font-family:var(--font-mono)}
-
-/* Candidates Grid */
-.cand-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.cand-item{
-  background:rgba(255,255,255,.02);border:1px solid var(--border);
-  border-radius:8px;padding:10px;text-align:center;
-  cursor:pointer;transition:all var(--transition);
-}
-.cand-item:hover{border-color:var(--accent-blue);transform:translateY(-2px);box-shadow:var(--glow)}
-.cand-sym{font-weight:700;font-size:15px;color:var(--text-primary)}
-
-/* Feed */
-.feed-item{
-  display:flex;gap:8px;padding:8px 0;
-  border-bottom:1px solid rgba(30,41,59,.2);font-size:12px;align-items:center;
-}
-.feed-item:last-child{border:none}
-.feed-time{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);min-width:38px}
-.feed-text{color:var(--text-secondary)}
-
-/* Watchlist */
-.wl-chip{
-  font-size:12px;padding:4px 10px;border-radius:6px;
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  cursor:pointer;color:var(--text-secondary);
-  display:inline-block;margin:3px;
-  transition:all var(--transition);
-}
-.wl-chip:hover{border-color:var(--accent-blue);color:var(--text-primary)}
-
-.empty-state{text-align:center;padding:30px;color:var(--text-dim);font-size:13px}
-
-/* ========== FOOTER ========== */
-.footer{
-  text-align:center;padding:12px;font-size:11px;
-  color:var(--text-muted);border-top:1px solid var(--border);
-  margin-top:8px;
-}
-.footer a{color:var(--accent-blue);text-decoration:none}
-
-/* ========== RESPONSIVE ========== */
-@media(max-width:1200px){
-  .metrics{grid-template-columns:repeat(3,1fr)}
-  .grid-3{grid-template-columns:1fr}
-}
-@media(max-width:900px){
-  .topbar{padding:10px 16px;flex-wrap:wrap;gap:10px}
-  .main{padding:12px 12px}
-  .metrics{grid-template-columns:repeat(2,1fr)}
-  .grid-2,.grid-3,.mini-charts{grid-template-columns:1fr}
-  .daily-bar{flex-wrap:wrap;gap:12px}
-  .daily-bar > div{min-width:60px}
-  .chart-header{flex-direction:column;gap:8px;align-items:flex-start}
-  .tv-frame{height:380px}
-  .mini-chart iframe{height:180px}
-  .macro-grid{grid-template-columns:repeat(2,1fr)}
-  .cand-grid{grid-template-columns:repeat(2,1fr)}
-  .search-row{flex-direction:column}
-  .best-signal{min-width:auto;width:100%}
-  .countdown-bar{flex-wrap:wrap;gap:8px;padding:8px 12px}
-}
-@media(max-width:480px){
-  .topbar{padding:8px 10px}
-  .logo{font-size:15px}
-  .clock-group{gap:8px;font-size:10px}
-  .metrics{grid-template-columns:1fr 1fr;gap:8px}
-  .metric-value{font-size:20px}
-  .main{padding:8px 8px}
-  .theme-switcher{gap:2px;padding:2px}
-  .theme-btn{width:24px;height:24px;font-size:12px}
-  .cd-timer{font-size:16px}
-  .cd-timer span{padding:2px 4px;min-width:26px}
-  .top-right{gap:8px}
-}</style></head><body data-theme="dark"><div class="topbar"><div class="logo"><div class="logo-dot"></div>V58 Engine<span class="logo-v">Institutional Signal</span></div><div class="top-right"><div class="theme-switcher"><button class="theme-btn active" data-t="dark" onclick="setTheme('dark')" title="Dark">🌑</button><button class="theme-btn" data-t="light" onclick="setTheme('light')" title="Light">☀️</button><button class="theme-btn" data-t="hitech" onclick="setTheme('hitech')" title="HiTech">💚</button><button class="theme-btn" data-t="ocean" onclick="setTheme('ocean')" title="Ocean">🌊</button></div><div class="clock-group"><div class="clock-item"><span class="clock-label">שוק</span><span class="market-badge market-closed" id="mkt-badge">—</span></div><div class="clock-item"><span class="clock-label">IL</span><span class="clock-val" id="il-time">--:--</span></div><div class="clock-item"><span class="clock-label">NY</span><span class="clock-val" id="ny-time">--:--</span></div></div></div></div><div class="countdown-bar"><span class="cd-label" id="cd-label">ספירה לאחור לפתיחת השוק</span><div class="cd-timer" id="cd-timer"><span id="cd-h">--</span><span class="cd-colon">:</span><span id="cd-m">--</span><span class="cd-colon">:</span><span id="cd-s">--</span></div><span class="cd-session cd-closed" id="cd-session">—</span></div><div class="ticker"><div class="ticker-track"><div class="tk" onclick="tv('DLO')"><span class="tk-sym">DLO</span><span class="tk-price">$12.27</span><span class="tk-chg chg-dn">-3.2%</span></div><div class="tk" onclick="tv('DIOD')"><span class="tk-sym">DIOD</span><span class="tk-price">$68.20</span><span class="tk-chg chg-up">+1.8%</span></div><div class="tk" onclick="tv('PENN')"><span class="tk-sym">PENN</span><span class="tk-price">$13.77</span><span class="tk-chg chg-dn">-5.1%</span></div><div class="tk" onclick="tv('CYTK')"><span class="tk-sym">CYTK</span><span class="tk-price">$62.50</span><span class="tk-chg chg-dn">-1.0%</span></div><div class="tk" onclick="tv('HUT')"><span class="tk-sym">HUT</span><span class="tk-price">$47.41</span><span class="tk-chg chg-dn">-10.5%</span></div><div class="tk" onclick="tv('SEDG')"><span class="tk-sym">SEDG</span><span class="tk-price">$51.76</span><span class="tk-chg chg-up">+10.8%</span></div><div class="tk" onclick="tv('XPEV')"><span class="tk-sym">XPEV</span><span class="tk-price">$16.93</span><span class="tk-chg chg-dn">-10.3%</span></div><div class="tk" onclick="tv('PLTR')"><span class="tk-sym">PLTR</span><span class="tk-price">$143.06</span><span class="tk-chg chg-dn">-10.1%</span></div><div class="tk" onclick="tv('ALGM')"><span class="tk-sym">ALGM</span><span class="tk-price">$30.12</span><span class="tk-chg chg-dn">-8.7%</span></div><div class="tk" onclick="tv('LC')"><span class="tk-sym">LC</span><span class="tk-price">$13.87</span><span class="tk-chg chg-dn">-8.0%</span></div><div class="tk" onclick="tv('BRZE')"><span class="tk-sym">BRZE</span><span class="tk-price">$23.00</span><span class="tk-chg chg-up">+7.7%</span></div><div class="tk" onclick="tv('SPY')"><span class="tk-sym">SPY</span><span class="tk-price">$0.00</span><span class="tk-chg chg-up">+0.0%</span></div><div class="tk" onclick="tv('QQQ')"><span class="tk-sym">QQQ</span><span class="tk-price">$0.00</span><span class="tk-chg chg-up">+0.0%</span></div><div class="tk" onclick="tv('DLO')"><span class="tk-sym">DLO</span><span class="tk-price">$12.27</span><span class="tk-chg chg-dn">-3.2%</span></div><div class="tk" onclick="tv('DIOD')"><span class="tk-sym">DIOD</span><span class="tk-price">$68.20</span><span class="tk-chg chg-up">+1.8%</span></div><div class="tk" onclick="tv('PENN')"><span class="tk-sym">PENN</span><span class="tk-price">$13.77</span><span class="tk-chg chg-dn">-5.1%</span></div><div class="tk" onclick="tv('CYTK')"><span class="tk-sym">CYTK</span><span class="tk-price">$62.50</span><span class="tk-chg chg-dn">-1.0%</span></div><div class="tk" onclick="tv('HUT')"><span class="tk-sym">HUT</span><span class="tk-price">$47.41</span><span class="tk-chg chg-dn">-10.5%</span></div><div class="tk" onclick="tv('SEDG')"><span class="tk-sym">SEDG</span><span class="tk-price">$51.76</span><span class="tk-chg chg-up">+10.8%</span></div><div class="tk" onclick="tv('XPEV')"><span class="tk-sym">XPEV</span><span class="tk-price">$16.93</span><span class="tk-chg chg-dn">-10.3%</span></div><div class="tk" onclick="tv('PLTR')"><span class="tk-sym">PLTR</span><span class="tk-price">$143.06</span><span class="tk-chg chg-dn">-10.1%</span></div><div class="tk" onclick="tv('ALGM')"><span class="tk-sym">ALGM</span><span class="tk-price">$30.12</span><span class="tk-chg chg-dn">-8.7%</span></div><div class="tk" onclick="tv('LC')"><span class="tk-sym">LC</span><span class="tk-price">$13.87</span><span class="tk-chg chg-dn">-8.0%</span></div><div class="tk" onclick="tv('BRZE')"><span class="tk-sym">BRZE</span><span class="tk-price">$23.00</span><span class="tk-chg chg-up">+7.7%</span></div><div class="tk" onclick="tv('SPY')"><span class="tk-sym">SPY</span><span class="tk-price">$0.00</span><span class="tk-chg chg-up">+0.0%</span></div><div class="tk" onclick="tv('QQQ')"><span class="tk-sym">QQQ</span><span class="tk-price">$0.00</span><span class="tk-chg chg-up">+0.0%</span></div></div></div><div class="main"><div class="search-row"><input class="search-input" placeholder="חפש מניה... (AAPL, TSLA, NVDA)" id="search-box"><div class="best-signal" id="best-sig"><div class="best-score">--</div><div class="best-info"><div class="best-label">סיגנל מוביל</div><div class="best-sym">ממתין לסריקה</div></div></div></div><div class="metrics"><div class="metric-card mc-pnl"><div class="metric-label">P&L</div><div class="metric-value clr-red">$915</div><div class="metric-sub">-3.3%</div></div><div class="metric-card mc-wr"><div class="metric-label">WIN RATE</div><div class="metric-value clr-red">22%</div><div class="metric-sub">2W/7L</div></div><div class="metric-card mc-pos"><div class="metric-label">פוזיציות</div><div class="metric-value clr-blue">11</div><div class="metric-sub">סגור</div></div><div class="metric-card mc-sig"><div class="metric-label">סיגנלים</div><div class="metric-value clr-purple">0</div><div class="metric-sub">סף: 65</div></div><div class="metric-card mc-mac"><div class="metric-label">מאקרו</div><div class="metric-value clr-amber">VIX</div><div class="metric-sub">—</div></div></div><div class="chart-area"><div class="chart-header"><span class="chart-symbol" id="chart-sym">DLO</span><div class="chart-tfs"><button class="tf-btn" onclick="setTF(5)">5 דק</button><button class="tf-btn active" onclick="setTF(15)">15 דק</button><button class="tf-btn" onclick="setTF(60)">שעה</button><button class="tf-btn" onclick="setTF('D')">יום</button><button class="tf-btn" onclick="setTF('W')">שבוע</button></div></div><iframe id="tv-frame" class="tv-frame" src="https://s.tradingview.com/widgetembed/?frameElementId=tvf&symbol=DLO&interval=15&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=0d1224&studies=MAExp%4025&studies=MAExp%40200&studies=RSI%40tv-basicstudies&theme=dark&style=1&timezone=Asia%2FJerusalem&withdateranges=1&hide_top_toolbar=0&allow_symbol_change=1&locale=he_IL" allowtransparency="true"></iframe></div><div class="mini-charts"><div class="mini-chart"><div class="mini-chart-hdr">📈 S&P 500</div><iframe src="https://s.tradingview.com/widgetembed/?symbol=SPY&interval=D&hidesidetoolbar=1&symboledit=0&saveimage=0&toolbarbg=0d1224&theme=dark&style=3&timezone=Asia%2FJerusalem&withdateranges=0&hide_top_toolbar=1&allow_symbol_change=0&locale=he_IL" style="width:100%;height:220px;border:none" allowtransparency="true"></iframe></div><div class="mini-chart"><div class="mini-chart-hdr">😨 VIX — מדד הפחד</div><iframe src="https://s.tradingview.com/widgetembed/?symbol=CBOE%3AVIX&interval=D&hidesidetoolbar=1&symboledit=0&saveimage=0&toolbarbg=0d1224&theme=dark&style=3&timezone=Asia%2FJerusalem&withdateranges=0&hide_top_toolbar=1&allow_symbol_change=0&locale=he_IL" style="width:100%;height:220px;border:none" allowtransparency="true"></iframe></div></div><div class="daily-bar"><div class="daily-item"><div class="daily-val clr-green">2</div><div class="daily-lbl">הצלחות</div></div><div class="daily-item"><div class="daily-val clr-red">7</div><div class="daily-lbl">הפסדים</div></div><div class="daily-item"><div class="daily-val clr-red">22%</div><div class="daily-lbl">Win Rate</div></div><div class="daily-item"><div class="daily-val clr-red">$915</div><div class="daily-lbl">P&L</div></div><div class="daily-item"><div class="daily-val clr-purple">0</div><div class="daily-lbl">סיגנלים</div></div></div><div class="grid-3"><div class="panel"><div class="panel-header"><span class="panel-title">📊 פוזיציות</span><span class="panel-badge badge-blue">11</span></div><div style="padding:0;overflow-x:auto"><table class="data-table"><thead><tr><th>מניה</th><th>כניסה</th><th>נוכחי</th><th>P&L</th><th>Trail</th></tr></thead><tbody><tr onclick="tv('DLO')"><td><div class="sym-cell"><span class="sym-name">DLO</span><span class="style-tag tag-swing">SW</span></div></td><td class="mono">$12.67</td><td class="mono">$12.27</td><td class="mono clr-red" style="font-weight:700">-3.2%</td><td>⚪</td></tr><tr onclick="tv('DIOD')"><td><div class="sym-cell"><span class="sym-name">DIOD</span><span class="style-tag tag-swing">SW</span></div></td><td class="mono">$66.99</td><td class="mono">$68.20</td><td class="mono clr-green" style="font-weight:700">+1.8%</td><td>🟡</td></tr><tr onclick="tv('PENN')"><td><div class="sym-cell"><span class="sym-name">PENN</span><span class="style-tag tag-swing">SW</span></div></td><td class="mono">$14.51</td><td class="mono">$13.77</td><td class="mono clr-red" style="font-weight:700">-5.1%</td><td>⚪</td></tr><tr onclick="tv('CYTK')"><td><div class="sym-cell"><span class="sym-name">CYTK</span><span class="style-tag tag-swing">SW</span></div></td><td class="mono">$63.15</td><td class="mono">$62.50</td><td class="mono clr-red" style="font-weight:700">-1.0%</td><td>⚪</td></tr><tr onclick="tv('HUT')"><td><div class="sym-cell"><span class="sym-name">HUT</span><span class="style-tag tag-swing">SW</span></div></td><td class="mono">$52.94</td><td class="mono">$47.41</td><td class="mono clr-red" style="font-weight:700">-10.5%</td><td>⚪</td></tr><tr onclick="tv('SEDG')"><td><div class="sym-cell"><span class="sym-name">SEDG</span><span class="style-tag tag-swing">SW</span></div></td><td class="mono">$46.73</td><td class="mono">$51.76</td><td class="mono clr-green" style="font-weight:700">+10.8%</td><td>🟡</td></tr><tr onclick="tv('XPEV')"><td><div class="sym-cell"><span class="sym-name">XPEV</span><span class="style-tag tag-swing">SW</span></div></td><td class="mono">$18.87</td><td class="mono">$16.93</td><td class="mono clr-red" style="font-weight:700">-10.3%</td><td>⚪</td></tr><tr onclick="tv('PLTR')"><td><div class="sym-cell"><span class="sym-name">PLTR</span><span class="style-tag tag-swing">SW</span></div></td><td class="mono">$159.20</td><td class="mono">$143.06</td><td class="mono clr-red" style="font-weight:700">-10.1%</td><td>⚪</td></tr><tr onclick="tv('ALGM')"><td><div class="sym-cell"><span class="sym-name">ALGM</span><span class="style-tag tag-swing">SW</span></div></td><td class="mono">$33.00</td><td class="mono">$30.12</td><td class="mono clr-red" style="font-weight:700">-8.7%</td><td>⚪</td></tr><tr onclick="tv('LC')"><td><div class="sym-cell"><span class="sym-name">LC</span><span class="style-tag tag-swing">SW</span></div></td><td class="mono">$15.08</td><td class="mono">$13.87</td><td class="mono clr-red" style="font-weight:700">-8.0%</td><td>⚪</td></tr><tr onclick="tv('BRZE')"><td><div class="sym-cell"><span class="sym-name">BRZE</span><span class="style-tag tag-swing">SW</span></div></td><td class="mono">$21.36</td><td class="mono">$23.00</td><td class="mono clr-green" style="font-weight:700">+7.7%</td><td>⚪</td></tr></tbody></table></div></div><div class="panel"><div class="panel-header"><span class="panel-title">🌅 מועמדות</span></div><div class="panel-body"><div class="cand-grid"><div class="cand-item" onclick="tv('PENN')"><div class="cand-sym">PENN</div></div><div class="cand-item" onclick="tv('HUT')"><div class="cand-sym">HUT</div></div><div class="cand-item" onclick="tv('CYTK')"><div class="cand-sym">CYTK</div></div><div class="cand-item" onclick="tv('DLO')"><div class="cand-sym">DLO</div></div><div class="cand-item" onclick="tv('SEDG')"><div class="cand-sym">SEDG</div></div><div class="cand-item" onclick="tv('DIOD')"><div class="cand-sym">DIOD</div></div></div></div></div><div class="panel"><div class="panel-header"><span class="panel-title">⚡ פעילות</span></div><div class="panel-body"><div class="feed-item"><span class="feed-time">19:48</span><span style="font-size:13px">🤖</span><span class="feed-text">דאשבורד עודכן</span></div><div class="feed-item"><span class="feed-time"></span><span style="font-size:13px">📊</span><span class="feed-text">11 פוזיציות | 0 סיגנלים</span></div><div class="feed-item"><span class="feed-time"></span><span style="font-size:13px">📈</span><span class="feed-text">Win Rate: 22% (2W/7L)</span></div></div></div></div><div class="grid-2"><div class="panel"><div class="panel-header"><span class="panel-title">🎯 סיגנלים</span><span class="panel-badge badge-green">0</span></div><div class="panel-body"><div class="empty-state">אין סיגנלים היום</div></div></div><div class="panel"><div class="panel-header"><span class="panel-title">🌍 מאקרו + סקטורים</span></div><div class="panel-body"><div class="macro-grid"><div class="macro-item"><div class="macro-val clr-red">31.0</div><div class="macro-name">VIX</div></div><div class="macro-item"><div class="macro-val clr-red">4.44</div><div class="macro-name">10Y</div></div><div class="macro-item"><div class="macro-val">1.02</div><div class="macro-name">DXY</div></div><div class="macro-item"><div class="macro-val clr-green">0.92</div><div class="macro-name">P/C</div></div></div><div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border)"><div class="sector-row"><span class="sector-name">Energy</span><div class="sector-bar"><div class="sector-bar-fill" style="width:90%;background:var(--accent-green)"></div></div><span class="sector-pct clr-green">+17.0%</span></div><div class="sector-row"><span class="sector-name">Utilitie</span><div class="sector-bar"><div class="sector-bar-fill" style="width:63.32%;background:var(--accent-green)"></div></div><span class="sector-pct clr-green">+3.6%</span></div><div class="sector-row"><span class="sector-name">Finance</span><div class="sector-bar"><div class="sector-bar-fill" style="width:26.72%;background:var(--accent-green)"></div></div><span class="sector-pct ">+0.6%</span></div><div class="sector-row"><span class="sector-name">Technolo</span><div class="sector-bar"><div class="sector-bar-fill" style="width:25.64%;background:var(--accent-green)"></div></div><span class="sector-pct ">+0.5%</span></div><div class="sector-row"><span class="sector-name">Staples</span><div class="sector-bar"><div class="sector-bar-fill" style="width:25.4%;background:var(--accent-red)"></div></div><span class="sector-pct ">-0.5%</span></div></div><div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--text-muted);margin-bottom:6px">Watchlist</div><span class="wl-chip" onclick="tv('PENN')">PENN</span><span class="wl-chip" onclick="tv('HUT')">HUT</span><span class="wl-chip" onclick="tv('CYTK')">CYTK</span><span class="wl-chip" onclick="tv('DLO')">DLO</span><span class="wl-chip" onclick="tv('SEDG')">SEDG</span><span class="wl-chip" onclick="tv('DIOD')">DIOD</span></div></div></div></div></div><div class="footer">V58 Institutional Signal Engine &bull; 18 מנועי ניתוח &bull; <a href="https://www.tradingview.com" target="_blank" style="color:var(--accent-blue);text-decoration:none">TradingView</a> &bull; עודכן 19:48</div><script>// ========== THEME MANAGEMENT ==========
-function setTheme(t) {
-  document.body.setAttribute('data-theme', t);
-  document.querySelectorAll('.theme-btn').forEach(function(b) {
-    b.classList.toggle('active', b.getAttribute('data-t') === t);
-  });
-  localStorage.setItem('v58-theme', t);
-  // Update TradingView iframes for theme
-  updateAllCharts();
+* { box-sizing: border-box; margin: 0; padding: 0 }
+body {
+  font-family: var(--font);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  direction: rtl;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
-// Load saved theme
-(function() {
-  var saved = localStorage.getItem('v58-theme');
-  if (saved) setTheme(saved);
-})();
+/* ── TOPBAR ── */
+.topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo {
+  font-size: 15px; font-weight: 700; color: var(--text-primary);
+  display: flex; align-items: center; gap: 8px;
+  letter-spacing: -0.3px;
+}
+.pulse-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.top-right {
+  display: flex; gap: 10px; align-items: center; font-size: 10px; color: var(--text-muted);
+}
+.top-right b { color: var(--text-primary); font-family: var(--mono); }
+.theme-btn {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+  padding: 3px 8px; font-size: 10px; color: var(--text-secondary); cursor: pointer;
+  font-family: var(--font);
+}
+.theme-btn:hover { border-color: var(--accent-blue); color: var(--text-primary); }
 
-// ========== TRADINGVIEW FUNCTIONS ==========
-var currentSymbol = 'PLTR';
-var currentInterval = '15';
+/* ── TICKER TAPE ── */
+.ticker-tape {
+  overflow: hidden; background: var(--bg-primary); border-bottom: 1px solid var(--border);
+  height: 30px; position: relative;
+}
+.ticker-track {
+  display: flex; gap: 32px; animation: scroll-ticker 45s linear infinite;
+  white-space: nowrap; height: 30px; align-items: center; position: absolute; right: 0;
+}
+.ticker-tape:hover .ticker-track { animation-play-state: paused; }
+@keyframes scroll-ticker { 0%{transform:translateX(0)} 100%{transform:translateX(50%)} }
+.ticker-item {
+  display: flex; align-items: center; gap: 6px; font-size: 11px; cursor: pointer;
+  padding: 0 4px; height: 30px; border-radius: 4px; transition: background .2s;
+}
+.ticker-item:hover { background: var(--glow-blue); }
+.ticker-sym { font-weight: 700; color: var(--text-primary); font-size: 12px; }
+.ticker-price { font-family: var(--mono); font-size: 10px; color: var(--text-secondary); }
+.ticker-up { font-family: var(--mono); font-size: 10px; color: var(--accent-green); background: var(--glow-green); padding: 1px 5px; border-radius: 3px; }
+.ticker-dn { font-family: var(--mono); font-size: 10px; color: var(--accent-red); background: var(--glow-red); padding: 1px 5px; border-radius: 3px; }
 
-function getTVUrl(symbol, interval, mini) {
-  var theme = document.body.getAttribute('data-theme');
-  var tvTheme = (theme === 'light') ? 'light' : 'dark';
-  var bgColor = getComputedStyle(document.body).getPropertyValue('--tv-bg').trim();
-  var base = 'https://s.tradingview.com/widgetembed/?frameElementId=tvf&symbol=' + symbol +
-    '&interval=' + interval +
-    '&symboledit=' + (mini ? '0' : '1') +
-    '&saveimage=0&toolbarbg=' + bgColor +
-    '&theme=' + tvTheme +
-    '&style=' + (mini ? '3' : '1') +
-    '&timezone=Asia%2FJerusalem' +
-    '&withdateranges=' + (mini ? '0' : '1') +
-    '&hide_top_toolbar=' + (mini ? '1' : '0') +
-    '&allow_symbol_change=' + (mini ? '0' : '1') +
-    '&locale=he_IL' +
-    '&hidesidetoolbar=' + (mini ? '1' : '0');
-  if (!mini) {
-    base += '&studies=MAExp%4025&studies=MAExp%40200&studies=RSI%40tv-basicstudies';
-  }
-  return base;
+/* ── MAIN CONTENT ── */
+.content { padding: 12px; max-width: 1440px; margin: 0 auto; }
+
+/* ── SEARCH + BEST ── */
+.search-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
+.search-input {
+  flex: 1; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 8px 14px; color: var(--text-primary);
+  font-size: 12px; font-family: var(--font); direction: ltr; text-align: right;
+  transition: border-color .2s;
+}
+.search-input:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 0 3px var(--glow-blue); }
+.best-sig {
+  background: linear-gradient(135deg, var(--glow-green), transparent);
+  border: 1px solid rgba(34,197,94,.25); border-radius: var(--radius);
+  padding: 6px 14px; display: flex; align-items: center; gap: 10px;
+  font-size: 11px; cursor: pointer; transition: all .2s; min-width: 180px;
+}
+.best-sig.glow { animation: glow-pulse 3s infinite; }
+@keyframes glow-pulse { 0%,100%{box-shadow:0 0 0 transparent} 50%{box-shadow:0 0 15px rgba(34,197,94,.2)} }
+.best-sig:hover { border-color: var(--accent-green); }
+.best-score {
+  background: rgba(34,197,94,.18); color: var(--accent-green);
+  font-weight: 800; font-size: 16px; padding: 4px 9px; border-radius: 7px;
+  font-family: var(--mono);
+}
+.best-text { color: var(--text-secondary); }
+.best-text strong { color: var(--text-primary); }
+
+/* ── METRICS GRID ── */
+.metrics-row {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 10px;
+}
+.metric-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 10px; text-align: center;
+  transition: all .2s; position: relative; overflow: hidden;
+}
+.metric-card:hover { border-color: var(--border-accent); transform: translateY(-1px); }
+.metric-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--accent-blue); opacity: 0; transition: opacity .2s;
+}
+.metric-card:hover::before { opacity: 1; }
+.metric-label { font-size: 9px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+.metric-value { font-size: 20px; font-weight: 800; font-family: var(--mono); }
+.metric-sub { font-size: 9px; color: var(--text-muted); margin-top: 2px; }
+.pos { color: var(--accent-green); }
+.neg { color: var(--accent-red); }
+.warn { color: var(--accent-amber); }
+
+/* ── CHART AREA ── */
+.chart-container {
+  background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border);
+  margin-bottom: 10px; overflow: hidden;
+}
+.chart-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 14px; border-bottom: 1px solid var(--border);
+}
+.chart-symbol { font-size: 16px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.3px; }
+.tf-group { display: flex; gap: 3px; }
+.tf-btn {
+  padding: 4px 10px; font-size: 10px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: transparent; color: var(--text-muted);
+  cursor: pointer; font-family: var(--font); transition: all .15s;
+}
+.tf-btn:hover { border-color: var(--accent-blue); color: var(--text-primary); }
+.tf-btn.active { background: var(--accent-blue); color: white; border-color: var(--accent-blue); }
+.tv-frame { width: 100%; height: 480px; border: none; }
+
+/* ── PANELS ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.panel {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+}
+.panel-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px; border-bottom: 1px solid var(--border);
+}
+.panel-title { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+.panel-badge {
+  font-size: 9px; padding: 2px 8px; border-radius: 10px; font-weight: 600;
+}
+.badge-green { background: var(--glow-green); color: var(--accent-green); }
+.badge-blue { background: var(--glow-blue); color: var(--accent-blue); }
+.badge-purple { background: var(--glow-purple); color: var(--accent-purple); }
+.panel-body { padding: 10px 14px; }
+
+/* ── TABLE ── */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  font-size: 9px; color: var(--text-muted); text-align: right;
+  padding: 6px 8px; border-bottom: 1px solid var(--border); font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.3px;
+}
+.data-table td {
+  font-size: 11px; padding: 8px; border-bottom: 1px solid rgba(30,41,59,.3);
+  cursor: pointer; transition: background .15s;
+}
+.data-table tr:hover { background: var(--bg-hover); }
+.mono { font-family: var(--mono); font-size: 10px; }
+.sym-name { font-weight: 700; font-size: 12px; color: var(--text-primary); }
+.tag-day { font-size: 8px; padding: 1px 4px; border-radius: 3px; margin-right: 4px; background: rgba(245,158,11,.12); color: var(--accent-amber); }
+.tag-swing { font-size: 8px; padding: 1px 4px; border-radius: 3px; margin-right: 4px; background: var(--glow-blue); color: var(--accent-blue); }
+
+/* ── SIGNALS ── */
+.sig-card {
+  padding: 10px 0; border-bottom: 1px solid rgba(30,41,59,.3);
+  display: flex; gap: 10px; cursor: pointer; transition: background .15s;
+  border-radius: var(--radius-sm);
+}
+.sig-card:hover { background: var(--bg-hover); }
+.sig-card:last-child { border: none; }
+.sig-score {
+  width: 38px; height: 38px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 14px; font-family: var(--mono); flex-shrink: 0;
+}
+.score-high { background: var(--glow-green); color: var(--accent-green); }
+.score-mid { background: rgba(245,158,11,.12); color: var(--accent-amber); }
+.score-low { background: rgba(100,116,139,.12); color: var(--text-muted); }
+.sig-info { flex: 1; }
+.sig-top { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+.sig-sym { font-weight: 700; font-size: 12px; }
+.sig-dir { font-size: 9px; padding: 1px 6px; border-radius: 4px; }
+.sig-dir.pos { background: var(--glow-green); color: var(--accent-green); }
+.sig-dir.neg { background: var(--glow-red); color: var(--accent-red); }
+.sig-council { font-size: 9px; margin-right: auto; }
+.sig-detail { font-size: 10px; color: var(--text-muted); }
+
+/* ── MACRO ── */
+.macro-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.macro-item {
+  text-align: center; padding: 8px 4px; border-radius: var(--radius-sm);
+  background: rgba(255,255,255,.02); border: 1px solid var(--border);
+}
+.macro-val { font-family: var(--mono); font-size: 15px; font-weight: 700; }
+.macro-label { font-size: 9px; color: var(--text-muted); margin-top: 2px; }
+.macro-regime { text-align: center; margin-top: 6px; font-size: 10px; color: var(--text-muted); }
+
+/* ── SECTORS ── */
+.sector-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.sector-name { font-size: 10px; min-width: 55px; color: var(--text-secondary); text-align: left; }
+.sector-bar { flex: 1; height: 12px; background: rgba(255,255,255,.03); border-radius: 3px; overflow: hidden; }
+.sector-fill { height: 100%; border-radius: 3px; transition: width .4s ease; }
+.sector-pct { font-size: 10px; min-width: 38px; text-align: left; font-family: var(--mono); }
+
+/* ── QUICK ACCESS ── */
+.quick-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+.quick-chip {
+  font-size: 11px; padding: 5px 12px; border-radius: var(--radius-sm);
+  background: rgba(255,255,255,.03); border: 1px solid var(--border);
+  cursor: pointer; color: var(--text-secondary); font-weight: 600;
+  transition: all .15s;
+}
+.quick-chip:hover { border-color: var(--accent-blue); color: var(--text-primary); background: var(--glow-blue); }
+
+/* ── DAILY STATS BAR ── */
+.stats-bar {
+  background: linear-gradient(135deg, var(--glow-blue), var(--glow-purple));
+  border: 1px solid rgba(59,130,246,.15); border-radius: var(--radius);
+  padding: 10px; margin-bottom: 10px;
+  display: flex; justify-content: space-around; text-align: center;
+}
+.stat-item .stat-val { font-family: var(--mono); font-weight: 800; font-size: 15px; }
+.stat-item .stat-label { font-size: 9px; color: var(--text-muted); }
+
+/* ── MINI CHARTS ── */
+.mini-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.mini-chart {
+  background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border);
+  overflow: hidden;
+}
+.mini-chart-header {
+  padding: 6px 12px; border-bottom: 1px solid var(--border);
+  font-size: 11px; font-weight: 600; color: var(--text-primary);
+}
+.mini-chart iframe { width: 100%; height: 200px; border: none; }
+
+/* ── FEED ── */
+.feed-item {
+  display: flex; gap: 6px; padding: 5px 0; border-bottom: 1px solid rgba(30,41,59,.25);
+  font-size: 10px; align-items: center;
+}
+.feed-item:last-child { border: none; }
+.feed-time { font-family: var(--mono); font-size: 9px; color: var(--text-muted); min-width: 32px; }
+.feed-text { color: var(--text-secondary); }
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center; padding: 10px; font-size: 9px; color: var(--text-muted);
+  border-top: 1px solid var(--border); margin-top: 10px;
 }
 
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 24px; color: var(--text-muted); font-size: 11px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .metrics-row { grid-template-columns: repeat(3, 1fr); }
+  .grid-3 { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .metrics-row { grid-template-columns: repeat(2, 1fr); }
+  .grid-2 { grid-template-columns: 1fr; }
+  .mini-charts { grid-template-columns: 1fr; }
+  .tv-frame { height: 360px; }
+  .topbar { padding: 8px 10px; }
+  .content { padding: 8px; }
+  .chart-symbol { font-size: 14px; }
+  .macro-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .metrics-row { grid-template-columns: repeat(2, 1fr); }
+  .tv-frame { height: 300px; }
+  .stats-bar { flex-wrap: wrap; gap: 4px; }
+  .stat-item { flex: 0 0 30%; }
+}
+</style></head><body><div class="topbar"><div class="logo"><div class="pulse-dot"></div>V59 AI Council</div><div class="top-right"><button class="theme-btn" onclick="switchTheme()">🎨 Theme</button><span>שוק <b id="ms" class="neg">CLOSED</b></span><span>IL <b id="il">--:--</b></span><span>NY <b id="ny">--:--</b></span></div></div><div class="ticker-tape"><div class="ticker-track"><div class="ticker-item" onclick="tv('DLO')"><span class="ticker-sym">DLO</span><span class="ticker-price">$12.27</span><span class="ticker-dn">-3.2%</span></div><div class="ticker-item" onclick="tv('DIOD')"><span class="ticker-sym">DIOD</span><span class="ticker-price">$68.20</span><span class="ticker-up">+1.8%</span></div><div class="ticker-item" onclick="tv('PENN')"><span class="ticker-sym">PENN</span><span class="ticker-price">$13.77</span><span class="ticker-dn">-5.1%</span></div><div class="ticker-item" onclick="tv('CYTK')"><span class="ticker-sym">CYTK</span><span class="ticker-price">$62.50</span><span class="ticker-dn">-1.0%</span></div><div class="ticker-item" onclick="tv('HUT')"><span class="ticker-sym">HUT</span><span class="ticker-price">$47.41</span><span class="ticker-dn">-10.5%</span></div><div class="ticker-item" onclick="tv('SEDG')"><span class="ticker-sym">SEDG</span><span class="ticker-price">$51.76</span><span class="ticker-up">+10.8%</span></div><div class="ticker-item" onclick="tv('XPEV')"><span class="ticker-sym">XPEV</span><span class="ticker-price">$16.93</span><span class="ticker-dn">-10.3%</span></div><div class="ticker-item" onclick="tv('PLTR')"><span class="ticker-sym">PLTR</span><span class="ticker-price">$143.06</span><span class="ticker-dn">-10.1%</span></div><div class="ticker-item" onclick="tv('ALGM')"><span class="ticker-sym">ALGM</span><span class="ticker-price">$30.12</span><span class="ticker-dn">-8.7%</span></div><div class="ticker-item" onclick="tv('LC')"><span class="ticker-sym">LC</span><span class="ticker-price">$13.87</span><span class="ticker-dn">-8.0%</span></div><div class="ticker-item" onclick="tv('BRZE')"><span class="ticker-sym">BRZE</span><span class="ticker-price">$23.00</span><span class="ticker-up">+7.7%</span></div><div class="ticker-item" onclick="tv('SPY')"><span class="ticker-sym">SPY</span><span class="ticker-price">$0.00</span><span class="ticker-up">+0.0%</span></div><div class="ticker-item" onclick="tv('QQQ')"><span class="ticker-sym">QQQ</span><span class="ticker-price">$0.00</span><span class="ticker-up">+0.0%</span></div><div class="ticker-item" onclick="tv('AAPL')"><span class="ticker-sym">AAPL</span><span class="ticker-price">$0.00</span><span class="ticker-up">+0.0%</span></div><div class="ticker-item" onclick="tv('NVDA')"><span class="ticker-sym">NVDA</span><span class="ticker-price">$0.00</span><span class="ticker-up">+0.0%</span></div><div class="ticker-item" onclick="tv('DLO')"><span class="ticker-sym">DLO</span><span class="ticker-price">$12.27</span><span class="ticker-dn">-3.2%</span></div><div class="ticker-item" onclick="tv('DIOD')"><span class="ticker-sym">DIOD</span><span class="ticker-price">$68.20</span><span class="ticker-up">+1.8%</span></div><div class="ticker-item" onclick="tv('PENN')"><span class="ticker-sym">PENN</span><span class="ticker-price">$13.77</span><span class="ticker-dn">-5.1%</span></div><div class="ticker-item" onclick="tv('CYTK')"><span class="ticker-sym">CYTK</span><span class="ticker-price">$62.50</span><span class="ticker-dn">-1.0%</span></div><div class="ticker-item" onclick="tv('HUT')"><span class="ticker-sym">HUT</span><span class="ticker-price">$47.41</span><span class="ticker-dn">-10.5%</span></div><div class="ticker-item" onclick="tv('SEDG')"><span class="ticker-sym">SEDG</span><span class="ticker-price">$51.76</span><span class="ticker-up">+10.8%</span></div><div class="ticker-item" onclick="tv('XPEV')"><span class="ticker-sym">XPEV</span><span class="ticker-price">$16.93</span><span class="ticker-dn">-10.3%</span></div><div class="ticker-item" onclick="tv('PLTR')"><span class="ticker-sym">PLTR</span><span class="ticker-price">$143.06</span><span class="ticker-dn">-10.1%</span></div><div class="ticker-item" onclick="tv('ALGM')"><span class="ticker-sym">ALGM</span><span class="ticker-price">$30.12</span><span class="ticker-dn">-8.7%</span></div><div class="ticker-item" onclick="tv('LC')"><span class="ticker-sym">LC</span><span class="ticker-price">$13.87</span><span class="ticker-dn">-8.0%</span></div><div class="ticker-item" onclick="tv('BRZE')"><span class="ticker-sym">BRZE</span><span class="ticker-price">$23.00</span><span class="ticker-up">+7.7%</span></div><div class="ticker-item" onclick="tv('SPY')"><span class="ticker-sym">SPY</span><span class="ticker-price">$0.00</span><span class="ticker-up">+0.0%</span></div><div class="ticker-item" onclick="tv('QQQ')"><span class="ticker-sym">QQQ</span><span class="ticker-price">$0.00</span><span class="ticker-up">+0.0%</span></div><div class="ticker-item" onclick="tv('AAPL')"><span class="ticker-sym">AAPL</span><span class="ticker-price">$0.00</span><span class="ticker-up">+0.0%</span></div><div class="ticker-item" onclick="tv('NVDA')"><span class="ticker-sym">NVDA</span><span class="ticker-price">$0.00</span><span class="ticker-up">+0.0%</span></div></div></div><div class="content"><div class="search-row"><input class="search-input" placeholder="הקלד סימבול..." id="sb" autocomplete="off"><div class="best-sig"><div class="best-score">--</div><div class="best-text">ממתין לסריקה</div></div></div><div class="metrics-row"><div class="metric-card"><div class="metric-label">P&L</div><div class="metric-value neg">$915</div><div class="metric-sub">-3.3% avg</div></div><div class="metric-card"><div class="metric-label">Win Rate</div><div class="metric-value neg">22%</div><div class="metric-sub">2W / 7L</div></div><div class="metric-card"><div class="metric-label">פוזיציות</div><div class="metric-value" style="color:var(--accent-blue)">11</div><div class="metric-sub">CLOSED</div></div><div class="metric-card"><div class="metric-label">סיגנלים</div><div class="metric-value" style="color:var(--accent-purple)">0</div><div class="metric-sub">סף: 65</div></div><div class="metric-card"><div class="metric-label">מנועים</div><div class="metric-value" style="color:var(--accent-cyan)">19</div><div class="metric-sub">+ 10 AI Agents</div></div></div><div class="chart-container"><div class="chart-header"><span class="chart-symbol" id="cs">DLO</span><div class="tf-group"><button class="tf-btn" onclick="setTF(5)">5m</button><button class="tf-btn active" onclick="setTF(15)">15m</button><button class="tf-btn" onclick="setTF(60)">1H</button><button class="tf-btn" onclick="setTF(999)">D</button><button class="tf-btn" onclick="setTF(9999)">W</button></div></div><iframe id="tvf" class="tv-frame" src="https://s.tradingview.com/widgetembed/?frameElementId=tvf&symbol=DLO&interval=15&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=111827&studies=MAExp%4025&studies=MAExp%40200&studies=RSI%40tv-basicstudies&theme=dark&style=1&timezone=Asia%2FJerusalem&withdateranges=1&hide_top_toolbar=0&allow_symbol_change=1&locale=he_IL" allowtransparency="true"></iframe></div><div class="mini-charts"><div class="mini-chart"><div class="mini-chart-header">S&P 500</div><iframe src="https://s.tradingview.com/widgetembed/?symbol=SPY&interval=D&hidesidetoolbar=1&symboledit=0&saveimage=0&toolbarbg=111827&theme=dark&style=3&timezone=Asia%2FJerusalem&withdateranges=0&hide_top_toolbar=1&allow_symbol_change=0&locale=he_IL" allowtransparency="true"></iframe></div><div class="mini-chart"><div class="mini-chart-header">VIX — Fear Index</div><iframe src="https://s.tradingview.com/widgetembed/?symbol=CBOE%3AVIX&interval=D&hidesidetoolbar=1&symboledit=0&saveimage=0&toolbarbg=111827&theme=dark&style=3&timezone=Asia%2FJerusalem&withdateranges=0&hide_top_toolbar=1&allow_symbol_change=0&locale=he_IL" allowtransparency="true"></iframe></div></div><div class="stats-bar"><div class="stat-item"><div class="stat-val pos">2</div><div class="stat-label">הצלחות</div></div><div class="stat-item"><div class="stat-val neg">7</div><div class="stat-label">הפסדים</div></div><div class="stat-item"><div class="stat-val neg">22%</div><div class="stat-label">Win Rate</div></div><div class="stat-item"><div class="stat-val neg">$915</div><div class="stat-label">P&L</div></div><div class="stat-item"><div class="stat-val" style="color:var(--accent-purple)">0</div><div class="stat-label">סיגנלים</div></div></div><div class="grid-3"><div class="panel"><div class="panel-header"><span class="panel-title">📊 פוזיציות</span><span class="panel-badge badge-blue">11</span></div><div style="padding:0;overflow-x:auto"><table class="data-table"><thead><tr><th>מניה</th><th>כניסה</th><th>נוכחי</th><th>P&L</th><th>Trail</th></tr></thead><tbody><tr onclick="tv('DLO')"><td><span class="sym-name">DLO</span><span class="tag-swing">SW</span></td><td class="mono">$12.67</td><td class="mono">$12.27</td><td class="mono neg">-3.2%</td><td>⚪</td></tr><tr onclick="tv('DIOD')"><td><span class="sym-name">DIOD</span><span class="tag-swing">SW</span></td><td class="mono">$66.99</td><td class="mono">$68.20</td><td class="mono pos">+1.8%</td><td>🟡</td></tr><tr onclick="tv('PENN')"><td><span class="sym-name">PENN</span><span class="tag-swing">SW</span></td><td class="mono">$14.51</td><td class="mono">$13.77</td><td class="mono neg">-5.1%</td><td>⚪</td></tr><tr onclick="tv('CYTK')"><td><span class="sym-name">CYTK</span><span class="tag-swing">SW</span></td><td class="mono">$63.15</td><td class="mono">$62.50</td><td class="mono neg">-1.0%</td><td>⚪</td></tr><tr onclick="tv('HUT')"><td><span class="sym-name">HUT</span><span class="tag-swing">SW</span></td><td class="mono">$52.94</td><td class="mono">$47.41</td><td class="mono neg">-10.5%</td><td>⚪</td></tr><tr onclick="tv('SEDG')"><td><span class="sym-name">SEDG</span><span class="tag-swing">SW</span></td><td class="mono">$46.73</td><td class="mono">$51.76</td><td class="mono pos">+10.8%</td><td>🟡</td></tr><tr onclick="tv('XPEV')"><td><span class="sym-name">XPEV</span><span class="tag-swing">SW</span></td><td class="mono">$18.87</td><td class="mono">$16.93</td><td class="mono neg">-10.3%</td><td>⚪</td></tr><tr onclick="tv('PLTR')"><td><span class="sym-name">PLTR</span><span class="tag-swing">SW</span></td><td class="mono">$159.20</td><td class="mono">$143.06</td><td class="mono neg">-10.1%</td><td>⚪</td></tr><tr onclick="tv('ALGM')"><td><span class="sym-name">ALGM</span><span class="tag-swing">SW</span></td><td class="mono">$33.00</td><td class="mono">$30.12</td><td class="mono neg">-8.7%</td><td>⚪</td></tr><tr onclick="tv('LC')"><td><span class="sym-name">LC</span><span class="tag-swing">SW</span></td><td class="mono">$15.08</td><td class="mono">$13.87</td><td class="mono neg">-8.0%</td><td>⚪</td></tr><tr onclick="tv('BRZE')"><td><span class="sym-name">BRZE</span><span class="tag-swing">SW</span></td><td class="mono">$21.36</td><td class="mono">$23.00</td><td class="mono pos">+7.7%</td><td>⚪</td></tr></tbody></table></div></div><div class="panel"><div class="panel-header"><span class="panel-title">⚡ גישה מהירה</span></div><div class="panel-body"><div class="quick-grid"><div class="quick-chip" onclick="tv('PENN')">PENN</div><div class="quick-chip" onclick="tv('CYTK')">CYTK</div><div class="quick-chip" onclick="tv('DIOD')">DIOD</div><div class="quick-chip" onclick="tv('HUT')">HUT</div><div class="quick-chip" onclick="tv('DLO')">DLO</div><div class="quick-chip" onclick="tv('SEDG')">SEDG</div></div></div></div><div class="panel"><div class="panel-header"><span class="panel-title">📡 פעילות</span></div><div class="panel-body"><div class="feed-item"><span class="feed-time">10:39</span><span>🤖</span><span class="feed-text">דאשבורד עודכן</span></div><div class="feed-item"><span class="feed-time"></span><span>📊</span><span class="feed-text">11 פוזיציות | 0 סיגנלים</span></div><div class="feed-item"><span class="feed-time"></span><span>🏛️</span><span class="feed-text">10 AI Agents פעילים</span></div><div class="feed-item"><span class="feed-time"></span><span>📈</span><span class="feed-text">Win Rate: 22%</span></div></div></div></div><div class="grid-2"><div class="panel"><div class="panel-header"><span class="panel-title">🎯 סיגנלים + AI Council</span><span class="panel-badge badge-green">0</span></div><div class="panel-body"><div class="empty-state">ממתין לסיגנלים...</div></div></div><div class="panel"><div class="panel-header"><span class="panel-title">🌍 מאקרו + סקטורים</span></div><div class="panel-body"><div class="macro-grid"><div class="macro-item"><div class="macro-val neg">30.9</div><div class="macro-label">VIX</div></div><div class="macro-item"><div class="macro-val neg">4.44</div><div class="macro-label">US 10Y</div></div><div class="macro-item"><div class="macro-val">1.02</div><div class="macro-label">DXY</div></div><div class="macro-item"><div class="macro-val pos">0.9</div><div class="macro-label">P/C</div></div></div><div class="macro-regime">🔴 סיכון גבוה (Bearish Macro)</div><div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)"><div class="sector-row"><span class="sector-name">Energy</span><div class="sector-bar"><div class="sector-fill" style="width:92%;background:var(--accent-green)"></div></div><span class="sector-pct pos">+17.8%</span></div><div class="sector-row"><span class="sector-name">Utilities</span><div class="sector-bar"><div class="sector-fill" style="width:69.36%;background:var(--accent-green)"></div></div><span class="sector-pct pos">+4.3%</span></div><div class="sector-row"><span class="sector-name">Finance</span><div class="sector-bar"><div class="sector-fill" style="width:30.48%;background:var(--accent-green)"></div></div><span class="sector-pct ">+1.0%</span></div><div class="sector-row"><span class="sector-name">Technology</span><div class="sector-bar"><div class="sector-fill" style="width:25.08%;background:var(--accent-green)"></div></div><span class="sector-pct ">+0.6%</span></div><div class="sector-row"><span class="sector-name">Staples</span><div class="sector-bar"><div class="sector-fill" style="width:18.84%;background:var(--accent-green)"></div></div><span class="sector-pct ">+0.1%</span></div><div class="sector-row"><span class="sector-name">Materials</span><div class="sector-bar"><div class="sector-fill" style="width:22.560000000000002%;background:var(--accent-red)"></div></div><span class="sector-pct ">-0.4%</span></div></div></div></div></div></div><div class="footer">V59 AI Council Engine | 19 מנועים + 10 AI Agents | עודכן 10:39 🔒</div><script>
 function tv(s) {
-  if (!s) return;
-  currentSymbol = s;
-  document.getElementById('chart-sym').textContent = s;
-  document.getElementById('tv-frame').src = getTVUrl(s, currentInterval, false);
-  document.getElementById('search-box').value = '';
+  if(!s) return;
+  document.getElementById('cs').textContent = s;
+  document.getElementById('tvf').src = 'https://s.tradingview.com/widgetembed/?frameElementId=tvf&symbol=' + s + '&interval=15&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=111827&studies=MAExp%4025&studies=MAExp%40200&studies=RSI%40tv-basicstudies&theme=dark&style=1&timezone=Asia%2FJerusalem&withdateranges=1&hide_top_toolbar=0&allow_symbol_change=1&locale=he_IL';
+  document.getElementById('sb').value = '';
+  document.querySelector('.chart-container').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
-
 function setTF(t) {
-  currentInterval = String(t);
-  document.querySelectorAll('.tf-btn').forEach(function(b) { b.classList.remove('active'); });
-  if (event && event.target) event.target.classList.add('active');
-  document.getElementById('tv-frame').src = getTVUrl(currentSymbol, currentInterval, false);
+  var interval = t;
+  if(t == 999) interval = 'D';
+  if(t == 9999) interval = 'W';
+  var s = document.getElementById('cs').textContent;
+  document.getElementById('tvf').src = 'https://s.tradingview.com/widgetembed/?frameElementId=tvf&symbol=' + s + '&interval=' + interval + '&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=111827&studies=MAExp%4025&studies=MAExp%40200&studies=RSI%40tv-basicstudies&theme=dark&style=1&timezone=Asia%2FJerusalem&withdateranges=1&hide_top_toolbar=0&allow_symbol_change=1&locale=he_IL';
+  document.querySelectorAll('.tf-btn').forEach(function(b){b.classList.remove('active')});
+  event.target.classList.add('active');
 }
-
-function updateAllCharts() {
-  document.getElementById('tv-frame').src = getTVUrl(currentSymbol, currentInterval, false);
-  document.getElementById('mc-spy').src = getTVUrl('SPY', 'D', true);
-  document.getElementById('mc-vix').src = getTVUrl('CBOE:VIX', 'D', true);
+function switchTheme() {
+  var themes = ['default','midnight','emerald'];
+  var body = document.body;
+  var current = body.getAttribute('data-theme') || 'default';
+  var idx = themes.indexOf(current);
+  var next = themes[(idx + 1) % themes.length];
+  body.setAttribute('data-theme', next);
+  localStorage.setItem('v59-theme', next);
 }
-
-// Init charts
-updateAllCharts();
-
-// ========== CLOCK & MARKET STATUS ==========
-function updateClocks() {
-  var now = new Date();
-  
-  // Israel time
-  var il = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Jerusalem' }));
-  var ilH = String(il.getHours()).padStart(2, '0');
-  var ilM = String(il.getMinutes()).padStart(2, '0');
-  document.getElementById('il-time').textContent = ilH + ':' + ilM;
-  
-  // NY time
-  var ny = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
-  var nyH = ny.getHours();
-  var nyM = ny.getMinutes();
-  var nyD = ny.getDay();
-  
-  document.getElementById('ny-time').textContent = 
-    String(nyH).padStart(2, '0') + ':' + String(nyM).padStart(2, '0');
-  
-  // Market status
-  var badge = document.getElementById('mkt-badge');
-  var isWeekday = nyD > 0 && nyD < 6;
-  var nyMinutes = nyH * 60 + nyM;
-  var preStart = 4 * 60;      // 4:00 AM
-  var regStart = 9 * 60 + 30;  // 9:30 AM
-  var regEnd = 16 * 60;        // 4:00 PM
-  var afterEnd = 20 * 60;      // 8:00 PM
-  
-  var session = '';
-  var sessionClass = '';
-  var sessionText = '';
-  var cdLabelText = '';
-  var targetMinutes = 0;
-  
-  if (!isWeekday) {
-    session = 'closed';
-    sessionClass = 'cd-closed';
-    sessionText = 'סגור — סוף שבוע';
-    cdLabelText = 'ספירה לאחור לפתיחת השוק';
-    // Calculate time to next Monday 9:30
-    var daysToMon = (8 - nyD) % 7 || 7;
-    targetMinutes = daysToMon * 24 * 60 + regStart - nyMinutes;
-  } else if (nyMinutes < preStart) {
-    session = 'closed';
-    sessionClass = 'cd-closed';
-    sessionText = 'סגור';
-    cdLabelText = 'לפתיחת Pre-Market';
-    targetMinutes = preStart - nyMinutes;
-  } else if (nyMinutes < regStart) {
-    session = 'premarket';
-    sessionClass = 'cd-premarket';
-    sessionText = '🟡 Pre-Market';
-    cdLabelText = 'לפתיחת מסחר רגיל';
-    targetMinutes = regStart - nyMinutes;
-  } else if (nyMinutes < regEnd) {
-    session = 'regular';
-    sessionClass = 'cd-regular';
-    sessionText = '🟢 מסחר רגיל';
-    cdLabelText = 'לסגירת השוק';
-    targetMinutes = regEnd - nyMinutes;
-  } else if (nyMinutes < afterEnd) {
-    session = 'afterhours';
-    sessionClass = 'cd-afterhours';
-    sessionText = '🟣 After Hours';
-    cdLabelText = 'לסגירת After Hours';
-    targetMinutes = afterEnd - nyMinutes;
-  } else {
-    session = 'closed';
-    sessionClass = 'cd-closed';
-    sessionText = 'סגור';
-    cdLabelText = 'לפתיחת Pre-Market מחר';
-    targetMinutes = (24 * 60 - nyMinutes) + preStart;
-  }
-  
-  // Update badge
-  if (session === 'regular') {
-    badge.textContent = 'פתוח';
-    badge.className = 'market-badge market-open';
-  } else {
-    badge.textContent = session === 'premarket' ? 'Pre' : session === 'afterhours' ? 'AH' : 'סגור';
-    badge.className = 'market-badge ' + (session === 'closed' ? 'market-closed' : 'market-open');
-  }
-  
-  // Update countdown
-  document.getElementById('cd-label').textContent = cdLabelText;
-  var cdSess = document.getElementById('cd-session');
-  cdSess.textContent = sessionText;
-  cdSess.className = 'cd-session ' + sessionClass;
-  
-  if (targetMinutes < 0) targetMinutes = 0;
-  var totalSec = targetMinutes * 60 - now.getSeconds();
-  if (totalSec < 0) totalSec = 0;
-  var h = Math.floor(totalSec / 3600);
-  var m = Math.floor((totalSec % 3600) / 60);
-  var s = totalSec % 60;
-  document.getElementById('cd-h').textContent = String(h).padStart(2, '0');
-  document.getElementById('cd-m').textContent = String(m).padStart(2, '0');
-  document.getElementById('cd-s').textContent = String(s).padStart(2, '0');
+function uc() {
+  var n = new Date();
+  var i = new Date(n.toLocaleString('en-US',{timeZone:'Asia/Jerusalem'}));
+  var y = new Date(n.toLocaleString('en-US',{timeZone:'America/New_York'}));
+  document.getElementById('il').textContent = i.getHours().toString().padStart(2,'0') + ':' + i.getMinutes().toString().padStart(2,'0');
+  document.getElementById('ny').textContent = y.getHours().toString().padStart(2,'0') + ':' + y.getMinutes().toString().padStart(2,'0');
+  var h = y.getHours(), d = y.getDay();
+  var o = d>0 && d<6 && ((h==9 && y.getMinutes()>=30) || h>9) && h<16;
+  document.getElementById('ms').textContent = o ? 'OPEN' : 'CLOSED';
+  document.getElementById('ms').className = o ? 'pos' : 'neg';
 }
-
-updateClocks();
-setInterval(updateClocks, 1000);
-
-// ========== SEARCH ==========
-document.getElementById('search-box').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') {
-    var val = this.value.toUpperCase().trim();
-    if (val) tv(val);
-  }
-});
-
-// ========== SPARKLINE GENERATOR ==========
-function generateSparklineSVG(trend, color) {
-  // Generate simple sparkline SVG
-  var points = [];
-  var w = 48, h = 20;
-  var steps = 12;
-  var val = 50;
-  for (var i = 0; i <= steps; i++) {
-    val += (Math.random() - (trend === 'up' ? 0.35 : 0.65)) * 8;
-    val = Math.max(5, Math.min(95, val));
-    points.push((i / steps * w).toFixed(1) + ',' + ((1 - val / 100) * h).toFixed(1));
-  }
-  return '<svg class="sparkline" viewBox="0 0 ' + w + ' ' + h + '" xmlns="http://www.w3.org/2000/svg">' +
-    '<polyline fill="none" stroke="' + color + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="' + points.join(' ') + '"/>' +
-    '</svg>';
-}
-
-// ========== UPDATE TIME ==========
-(function() {
-  var now = new Date();
-  var il = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Jerusalem' }));
-  document.getElementById('update-time').textContent = 
-    String(il.getHours()).padStart(2,'0') + ':' + String(il.getMinutes()).padStart(2,'0');
-})();</script></body></html>
+// Init
+(function(){
+  var saved = localStorage.getItem('v59-theme');
+  if(saved) document.body.setAttribute('data-theme', saved);
+  uc();
+  setInterval(uc, 30000);
+  document.getElementById('sb').addEventListener('keydown', function(e){
+    if(e.key === 'Enter') tv(this.value.toUpperCase().trim());
+  });
+})();
+</script></body></html>
